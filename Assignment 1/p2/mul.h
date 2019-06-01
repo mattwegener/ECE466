@@ -9,7 +9,7 @@ SC_MODULE(mul){
   }
 
   SC_CTOR(mul){
-    SC_METHOD(do_mul_cst);
+    SC_METHOD(do_mul);
     sensitive << A;
   }
 };
