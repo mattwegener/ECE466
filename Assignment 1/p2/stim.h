@@ -20,7 +20,7 @@ SC_MODULE(stim)
       X.write(0);
       wait();
     }
-    sc_stop();
+    //sc_stop();
   }
   SC_CTOR(stim)
   {
