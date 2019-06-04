@@ -5,7 +5,8 @@ using namespace std;
 SC_MODULE(mon)
 {
   sc_in<float> X, Y;
-  sc_in<bool>Clk;
+  //sc_in<bool> reset;
+  sc_in<bool> Clk;
 
   void monitor() {
   	cout << setw(10) << "Time";
@@ -18,7 +19,7 @@ SC_MODULE(mon)
   		wait();
   	}
   }
-  
+
   SC_CTOR(mon){
     SC_CTHREAD(monitor, Clk.pos());
   }

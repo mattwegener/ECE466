@@ -13,6 +13,7 @@ SC_MODULE(stim)
     reset.write(true);
     wait();
     //1 cycle unit pulse
+    reset.write(false);
     X.write(1);
     wait();
     //20 Data points after unit pulse
