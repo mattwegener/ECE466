@@ -14,7 +14,7 @@ int sc_main(int argc, char* argv[])
   Stim1.reset(reset);
   Stim1.Clk(TestClk);
 
-  filter DIT("Filter");
+  filter2 DIT("Filter");
   DIT.X(Xin);
   DIT.Y(Yout);
   DIT.Clk(TestClk);
