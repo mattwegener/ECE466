@@ -1,0 +1,82 @@
+[mwegener@ugls13 Q3]$ make all
+/usr/bin/g++ -O3 -Wall -Wextra -pedantic -I ./ -isystem /opt/Accellera/systemc-2.3.1/include -c main.cpp
+In file included from main.cpp:3:0:
+filter.h:12:16: error: return type specification for constructor invalid
+   void filter2(){
+                ^
+In file included from main.cpp:4:0:
+mon.h:3:7: error: expected nested-name-specifier before ‘namespace’
+ using namespace std;
+       ^
+mon.h:3:7: error: expected unqualified-id before ‘namespace’
+mon.h:3:7: error: expected ‘;’ before ‘namespace’
+mon.h:3:7: error: expected unqualified-id before ‘namespace’
+main.cpp:38:1: error: expected ‘}’ at end of input
+ }
+ ^
+In file included from main.cpp:3:0:
+filter.h: In constructor ‘filter2::filter2()’:
+filter.h:13:48: error: invalid use of member function (did you forget the ‘()’ ?)
+     Y.write(R1out.read()+(0.25*(R1out.read()+X.read)+0.5*R0out.read()));
+                                                ^
+filter.h:14:52: error: invalid use of member function (did you forget the ‘()’ ?)
+     R0in.write(X.read()+(-1)*(0.25*(R1out.read()+X.read)+0.5*R0out.read()))
+                                                    ^
+filter.h:15:5: error: expected ‘;’ before ‘R1in’
+     R1in.write(R0out.read());
+     ^
+In file included from /opt/Accellera/systemc-2.3.1/include/systemc:72:0,
+                 from /opt/Accellera/systemc-2.3.1/include/systemc.h:208,
+                 from main.cpp:1:
+filter.h: In member function ‘void filter2::zdelay()’:
+filter.h:31:3: error: invalid use of qualified-name ‘sc_core::sc_module_name’
+   SC_CTOR(filter2){
+   ^
+filter.h:32:15: error: expected primary-expression before ‘filter2_handle’
+     SC_METHOD(filter2);
+               ^
+filter.h:32:15: error: expected ‘}’ before ‘filter2_handle’
+filter.h:32:15: error: expected ‘}’ before ‘filter2_handle’
+filter.h:32:15: error: ‘filter2_handle’ was not declared in this scope
+     SC_METHOD(filter2);
+               ^
+In file included from main.cpp:4:0:
+mon.h: In member function ‘void filter2::mon::monitor()’:
+mon.h:12:19: error: ‘setw’ was not declared in this scope
+    cout << setw(10) << "Time";
+                   ^
+mon.h:12:19: note: suggested alternative:
+In file included from stim.h:2:0,
+                 from main.cpp:2:
+/usr/include/c++/4.8.2/iomanip:222:3: note:   ‘std::setw’
+   setw(int __n)
+   ^
+main.cpp: In member function ‘int filter2::sc_main(int, char**)’:
+main.cpp:17:23: error: no matching function for call to ‘filter2::filter2(const char [7])’
+   filter2 DIT("Filter");
+                       ^
+main.cpp:17:23: note: candidates are:
+In file included from main.cpp:3:0:
+filter.h:12:8: note: filter2::filter2()
+   void filter2(){
+        ^
+filter.h:12:8: note:   candidate expects 0 arguments, 1 provided
+In file included from /opt/Accellera/systemc-2.3.1/include/systemc:72:0,
+                 from /opt/Accellera/systemc-2.3.1/include/systemc.h:208,
+                 from main.cpp:1:
+filter.h:3:11: note: filter2::filter2(const filter2&)
+ SC_MODULE(filter2){
+           ^
+filter.h:3:11: note:   no known conversion for argument 1 from ‘const char [7]’ to ‘const filter2&’
+main.cpp:20:7: error: ‘struct filter2’ has no member named ‘Clk’
+   DIT.Clk(TestClk);
+       ^
+main.cpp: At global scope:
+main.cpp:6:5: warning: unused parameter ‘argc’ [-Wunused-parameter]
+ int sc_main(int argc, char* argv[])
+     ^
+main.cpp:6:5: warning: unused parameter ‘argv’ [-Wunused-parameter]
+main.cpp:38:1: error: expected unqualified-id at end of input
+ }
+ ^
+make: *** [main.o] Error 1
