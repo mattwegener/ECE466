@@ -1,7 +1,7 @@
 #include "systemc.h"
 
 SC_MODULE(reg){
-  sc_in<float> in
+  sc_in<float> in;
   sc_out<float> out;
   sc_in_clk clock;
   sc_in<bool> reset;

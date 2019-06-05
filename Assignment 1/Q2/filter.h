@@ -26,12 +26,12 @@ SC_MODULE(filter){
 
     MULT0.CST(a0); MULT0.A(A1out); MULT0.M(M0out);
     MULT1.CST(a1); MULT1.A(R0out); MULT1.M(M1out);
-    MULT1.CST(a2); MULT1.A(A2out); MULT1.M(M2out);
+    MULT2.CST(a2); MULT2.A(A2out); MULT2.M(M2out);
 
-    ADD0.A(x); ADD0.B(M0out); ADD0.C(A0out);
-    ADD1.A(M1out); ADD1.B(M2out); ADD1.C(A1out)
-    ADD2.A(x); ADD0.B(R1out); ADD0.C(A2out);
-    ADD3.A(A1out); ADD0.B(R1out); ADD0.C(y);
+    ADD0.A(X); ADD0.B(M0out); ADD0.C(A0out);
+    ADD1.A(M1out); ADD1.B(M2out); ADD1.C(A1out);
+    ADD2.A(X); ADD2.B(R1out); ADD2.C(A2out);
+    ADD3.A(A1out); ADD3.B(R1out); ADD3.C(Y);
 
     a0.write(-1);
     a1.write(0.5);
