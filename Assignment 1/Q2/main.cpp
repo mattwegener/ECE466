@@ -2,6 +2,8 @@
 #include "stim.h"
 #include "filter.h"
 #include "mon.h"
+#include <iostream>
+#include <iomanip>
 
 int sc_main(int argc, char* argv[])
 {
@@ -17,7 +19,7 @@ int sc_main(int argc, char* argv[])
   filter DIT("Filter");
   DIT.X(Xin);
   DIT.Y(Yout);
-  DIT.Clk(TestClk);
+  DIT.clock(TestClk);
   DIT.reset(reset);
 
   mon Monitor1("Monitor");
