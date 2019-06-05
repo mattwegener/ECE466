@@ -10,8 +10,8 @@ SC_MODULE(filter2){
 
 
   void filter2(){
-    Y.write(R1out.read()+(0.25*(R1out.read()+X.read)+0.5*R0out.read()));
-    R0in.write(X.read()+(-1)*(0.25*(R1out.read()+X.read)+0.5*R0out.read()))
+    Y.write(R1out.read()+(0.25*(R1out.read()+X.read())+0.5*R0out.read()));
+    R0in.write(X.read()+(-1)*(0.25*(R1out.read()+X.read())+0.5*R0out.read()));
     R1in.write(R0out.read());
   }
 
