@@ -1,9 +1,7 @@
 #include "systemc.h"
-#include "stimQ3.h"
-#include "filterQ3.h"
-#include "monQ3.h"
-#include <iostream>
-#include <iomanip>
+#include "stim.h"
+#include "filter.h"
+#include "mon.h"
 
 int sc_main(int argc, char* argv[])
 {
@@ -11,18 +9,18 @@ int sc_main(int argc, char* argv[])
   sc_signal<bool> reset;
   sc_clock TestClk("TestClock", 10, SC_NS, 0.5, 1, SC_NS);
 
-  stim Stim1 ("Stimulus");
+  stim Stim1("Stimulus");
   Stim1.X(Xin);
   Stim1.reset(reset);
   Stim1.Clk(TestClk);
 
-  dig_filter DIT ("Filter");
+  filter2 DIT("Filter");
   DIT.X(Xin);
   DIT.Y(Yout);
   DIT.clock(TestClk);
   DIT.reset(reset);
 
-  mon Monitor1 ("Monitor");
+  mon Monitor1("Monitor");
   Monitor1.X(Xin);
   Monitor1.Y(Yout);
   Monitor1.Clk(TestClk);

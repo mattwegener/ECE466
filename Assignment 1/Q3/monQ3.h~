@@ -11,11 +11,11 @@ SC_MODULE(mon)
 
   void monitor() {
   	cout << setw(10) << "Time";
-  	cout << setw(2) << "X" << setw(14) << "Y" << endl;
+  	cout << setw(2) << "X" << setw(2) << "Y" << endl;
 
   	while (true) {
   		cout << setw(10) << sc_time_stamp();
-  		cout << setw(2) << X.read() << setw(14) << Y.read();
+  		cout << setw(2) << X.read() << setw(2) << Y.read();
   		cout << endl;
   		wait();
   	}
