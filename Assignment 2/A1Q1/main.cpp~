@@ -2,6 +2,8 @@
 #include "stim.h"
 #include "filter.h"
 #include "mon.h"
+#include <iostream>
+#include <iomanip>
 
 int sc_main(int argc, char* argv[])
 {
@@ -14,7 +16,7 @@ int sc_main(int argc, char* argv[])
   Stim1.reset(reset);
   Stim1.Clk(TestClk);
 
-  filter2 DIT("Filter");
+  filter DIT("Filter");
   DIT.X(Xin);
   DIT.Y(Yout);
   DIT.clock(TestClk);
