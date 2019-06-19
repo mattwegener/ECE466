@@ -9,6 +9,7 @@ using namespace std;
 #define WTBLK 3
 #define RDBLK 0
 
+static sc_logic Z[8] = {SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z};
 SC_MODULE(testbench){
   sc_inout <sc_lv<8> > data; // Bidirectional port of logic-vector type
   sc_out < sc_uint<8> > addr;
