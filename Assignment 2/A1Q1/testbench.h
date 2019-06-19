@@ -49,7 +49,30 @@ SC_MODULE(testbench){
       cout << "Test 2: Checking Data bus is properely released" <<endl;
       cout << "Expectations: Data = ZZZZZZZZ" <<endl;
       data_read = data.read();
-      cout << "@" << sc_time_stamp() << "Data Release Check, data = " << data_read << endl;
+      cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
+      cout << endl;
+
+      //Write to byte and check data bus release
+      cout << "Test 3: Write to byte" << endl;
+      cout << "Expectations: data = 11110000" << endl;
+      addr.write(1);
+      data.write(0xF0);
+      comm.write(WTBYT);
+      wait();
+      new_comm.write(true);
+      while(!complete.read()){
+        wait();
+      }
+      data_read = data.read();
+      cout << "@" << sc_time_stamp() << ": WTBYT, address = " << addr << ", data = " << data_read << endl;
+      cout << endl;
+      new_comm.write(false);
+      wait();
+      wait();
+      cout << "Test 4: Checking Data bus is properely released" <<endl;
+      cout << "Expectations: Data = ZZZZZZZZ" <<endl;
+      data_read = data.read();
+      cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
       cout << endl;
 
       //Simulation end
