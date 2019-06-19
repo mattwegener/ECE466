@@ -67,12 +67,13 @@ SC_MODULE(testbench){
       cout << "@" << sc_time_stamp() << ": WTBYT, address = " << addr << ", data = " << data_read << endl;
       cout << endl;
       new_comm.write(false);
+      data.write(Z);
       wait();
       wait();
-      cout << "Test 4: Checking Data bus is properely released" <<endl;
+      cout << "Test 4: Checking Data bus has been reset" <<endl;
       cout << "Expectations: Data = ZZZZZZZZ" <<endl;
       data_read = data.read();
-      cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
+      cout << "@" << sc_time_stamp() << ": Data Bus Reset Check, data = " << data_read << endl;
       cout << endl;
 
       //Simulation end
