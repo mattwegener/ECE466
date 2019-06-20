@@ -63,11 +63,10 @@ SC_MODULE(testbench){
       while(!complete.read()){
         wait();
       }
-      data_read = data.read();
-      cout << "@" << sc_time_stamp() << ": WTBYT, address = " << addr << ", data = " << data_read << endl;
-      cout << endl;
       new_comm.write(false);
-      addr.write(0);
+      wait();
+      wait();
+      addr.write(1);
       comm.write(RDBYT);
       wait();
       new_comm.write(true);
