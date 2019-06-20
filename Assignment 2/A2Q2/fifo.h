@@ -56,8 +56,8 @@ template <class T, int size> class fifo : public sc_module, public fifo_out_if <
 
         done.notify();
         wait();
-      }
-    }
+      }//end while
+    }//end func
 
     bool write(T data)
     {

@@ -10,7 +10,6 @@ template <class T> class consumer : public sc_module
     sc_port < fifo_in_if<T> > in;
     sc_in <bool> Clock;
 
-
     void do_reads()
     {
       T data;
