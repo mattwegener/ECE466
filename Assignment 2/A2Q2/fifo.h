@@ -15,4 +15,4 @@ template <class T> class fifo : public sc_module, public fifo_out_if <T>, public
 
   }
 
-}
+};

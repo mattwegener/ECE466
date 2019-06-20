@@ -24,4 +24,4 @@ template <class T> class producer : public sc_module
        sensitive << Clock.pos();
     }
 
-}
+};
