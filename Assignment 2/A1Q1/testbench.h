@@ -84,6 +84,7 @@ SC_MODULE(testbench){
       cout << "Expectations: Data = ZZZZZZZZ" <<endl;
       wait();
       data_read = data.read();
+      wait();
       cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
       cout << endl;
 
