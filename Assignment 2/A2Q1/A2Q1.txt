@@ -1,0 +1,52 @@
+
+Info: (I703) tracing timescale unit set: 1 ns (Filter_traces.vcd)
+Test 1: Read from byte
+Expectations: data = XXXXXXXX
+@41 ns: RDBYT, address = 0, data = XXXXXXXX
+@61 ns: RDBYT, address = 0, data = XXXXXXXX
+
+Test 2: Checking Data bus is properely released
+Expectations: Data = ZZZZZZZZ
+@81 ns: Data Release Check, data = ZZZZZZZZ
+
+Test 3: Write to byte then read
+Expectations: data = 11110000
+@101 ns: WTBYT, address = 1, data = 11110000
+@161 ns: RDBYT, address = 1, data = 11110000
+
+Test 4: Checking Data Bus after test 3
+Expectations: Data = ZZZZZZZZ
+@201 ns: Data Release Check, data = ZZZZZZZZ
+
+Test 5: Read from block
+Expectations: data = XXXXXXXX, 1111000, XXXXXXXX, XXXXXXXX
+@221 ns: RDBLK-0, address = 0, data = XXXXXXXX
+@231 ns: RDBLK-1, address = 1, data = 11110000
+@241 ns: RDBLK-2, address = 2, data = XXXXXXXX
+@251 ns: RDBLK-3, address = 3, data = XXXXXXXX
+
+Test 6: Checking Data Bus after test 5
+Expectations: Data = ZZZZZZZZ
+@291 ns: Data Release Check, data = ZZZZZZZZ
+
+Test 7: Write to block then read
+Expectations: data = 11000011, 11000011, 11000011, 11000011
+@311 ns: WTBLK-0, address = 230, data = 11000011
+@321 ns: WTBLK-1, address = 231, data = 11000011
+@331 ns: WTBLK-2, address = 232, data = 11000011
+@341 ns: WTBLK-3, address = 233, data = 11000011
+
+Test 8: Reading from block to check if write success @ address: 230
+Expectations: data = 11000011, 11000011, 11000011, 11000011
+@401 ns: RDBLK-0, address = 230, data = 11000011
+@411 ns: RDBLK-1, address = 231, data = 11000011
+@421 ns: RDBLK-2, address = 232, data = 11000011
+@431 ns: RDBLK-3, address = 233, data = 11000011
+
+Test 9: Checking Data Bus after test 7 & 8
+Expectations: Data = ZZZZZZZZ
+@471 ns: Data Release Check, data = ZZZZZZZZ
+
+Tests Complete
+
+Info: /OSCI/SystemC: Simulation stopped by user.
