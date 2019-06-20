@@ -79,9 +79,10 @@ SC_MODULE(testbench){
       wait();
       wait();
 
-      
+
       cout << "Test 4: Checking Data bus is properely released" <<endl;
       cout << "Expectations: Data = ZZZZZZZZ" <<endl;
+      wait();
       data_read = data.read();
       cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
       cout << endl;
