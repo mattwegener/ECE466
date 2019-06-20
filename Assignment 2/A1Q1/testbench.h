@@ -52,6 +52,7 @@ SC_MODULE(testbench){
       cout << "Expectations: Data = ZZZZZZZZ" <<endl;
       data_read = data.read();
       cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
+      cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data << endl;
       cout << endl;
 
       //Write to byte and check data bus release
