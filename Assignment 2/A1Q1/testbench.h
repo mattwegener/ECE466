@@ -83,6 +83,25 @@ SC_MODULE(testbench){
       cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
       cout << endl;
 
+      //Read from byte and check data bus release
+      cout << "Test 5: Read from block" << endl;
+      cout << "Expectations: data = XXXXXXXX, 1111000, XXXXXXXX, XXXXXXXX" << endl;
+      addr.write(0);
+      comm.write(RDBLK);
+      wait();
+      new_comm.write(true);
+      while(!complete.read()){
+        wait();
+      }
+      new_comm.write(false);
+      wait();
+
+      cout << "Test 6: Checking Data bus is properely released" <<endl;
+      cout << "Expectations: Data = ZZZZZZZZ" <<endl;
+      data_read = data.read();
+      cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
+      cout << endl;
+
       //Simulation end
       cout << "Tests Complete" << endl;
       sc_stop();
