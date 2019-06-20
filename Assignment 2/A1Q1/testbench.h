@@ -80,13 +80,13 @@ SC_MODULE(testbench){
       wait();
       wait();
 
-      cout << "Test 4: Checking Data bus is properely released" <<endl;
+      cout << endl << "Test 4: Checking Data Bus after test 3" <<endl;
       cout << "Expectations: Data = ZZZZZZZZ" <<endl;
       data_read = data.read();
       cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
       cout << endl;
 
-      //Read from byte and check data bus release
+      //Read from block and check data bus release
       cout << "Test 5: Read from block" << endl;
       cout << "Expectations: data = XXXXXXXX, 1111000, XXXXXXXX, XXXXXXXX" << endl;
       addr.write(0);
@@ -100,11 +100,44 @@ SC_MODULE(testbench){
       wait();
       wait();
 
-      cout << "Test 6: Checking Data bus is properely released" <<endl;
+      cout << endl << "Test 6: Checking Data Bus after test 5" <<endl;
       cout << "Expectations: Data = ZZZZZZZZ" <<endl;
       data_read = data.read();
       cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
       cout << endl;
+
+      cout << "Test 7: Write to block then read" << endl;
+      cout << "Expectations: data = 11000011, 11000011, 11000011, 11000011" << endl;
+      data.write(0xC3);
+      addr.write(230);
+      comm.write(WTBYT);
+      wait();
+      new_comm.write(true);
+      while(!complete.read()){
+        wait();
+      }
+      new_comm.write(false);
+      wait();
+      wait();
+
+      cout<<endl<< "Test 8: Reading from block to check if write success @ address: " << addr << endl;
+      cout << "Expectations: data = 11000011, 11000011, 11000011, 11000011" << endl;
+      comm.write(RDBLK);
+      wait();
+      new_comm.write(true);
+      while(!complete.read()){
+        wait();
+      }
+      new_comm.write(false);
+      wait();
+      wait();
+
+      cout << endl << "Test 9: Checking Data Bus after test 7 & 8" <<endl;
+      cout << "Expectations: Data = ZZZZZZZZ" <<endl;
+      data_read = data.read();
+      cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
+      cout << endl;
+
 
       //Simulation end
       cout << "Tests Complete" << endl;
