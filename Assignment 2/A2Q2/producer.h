@@ -1,4 +1,8 @@
 #include "systemc.h"
+#include "fifo_if.h"
+#include <iostream>
+#include <iomanip>
+using namespace std;
 
 template <class T> class producer : public sc_module
 {
@@ -13,9 +17,8 @@ template <class T> class producer : public sc_module
       {
         wait();
         if (out->write(data))
-          cout << "W " << data << " at " << sc_time_stamp() << endl;
-        if(data != 9) data++;
-        else data = 0;
+          cout << "@" << setw(6) << sc_time_stamp() << setw(2) << "Fifo Write:" << setw(2) << data << endl;;
+        data = data++ % 10;
 
       }
     }

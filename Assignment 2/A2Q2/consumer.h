@@ -1,5 +1,8 @@
 #include "systemc.h"
-
+#include "fifo_if.h"
+#include <iostream>
+#include <iomanip>
+using namespace std;
 
 template <class T> class consumer : public sc_module
 {
@@ -15,9 +18,7 @@ template <class T> class consumer : public sc_module
       {
         wait();
         if (in->read(data))
-          cout << "R " << data << " at " << sc_time_stamp() << endl;
-
-
+          cout << "@" << setw(6) << sc_time_stamp() << setw(2) << "Fifo Read:" << setw(2) << data << endl;
       }
     }
 
