@@ -17,7 +17,7 @@ template <class T> class consumer : public sc_module
       {
         wait();
         if (in->read(data))
-          cout << "@" << setw(6) << sc_time_stamp() << setw(12) << "Fifo Read:" << setw(2) << data << endl;
+          cout << "@" << setw(6) << sc_time_stamp() << setw(11) << "Fifo Read:" << setw(3) << data << endl;
       }
     }
 
