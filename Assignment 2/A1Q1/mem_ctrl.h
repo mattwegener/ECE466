@@ -106,7 +106,7 @@ SC_MODULE(mem_ctrl) {
       	    wait();
       	  }
 
-      	  if ((comm_s == RDBYT)) data.write(Z); // Stop driving (a finished read)
+      	  if ((comm_s == RDBYT)|| (comm_s == RDBLK)) data.write(Z); // Stop driving (a finished read)
       	  complete.write(false);
       	}
       }
