@@ -5,7 +5,6 @@
 #define WTBYT 2
 #define WTBLK 3
 
-static sc_logic Z[8] = {SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z};
 SC_MODULE(mem_ctrl) {
   // Ports
   sc_inout <sc_lv<8> > data; // Bidirectional port of logic-vector type

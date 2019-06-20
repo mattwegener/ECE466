@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 
+static sc_logic Z[8] = {SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z, SC_LOGIC_Z};
 int sc_main(int argc, char* argv[])
 {
     // Internal signals:
