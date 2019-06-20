@@ -25,91 +25,91 @@ SC_MODULE(mem_ctrl) {
     while (true) {
       if (reset.read() == true) complete.write(false);
       else {
-	if (new_comm.read() == true) {
-	  comm_s = comm.read(); // Sample command port
-	  switch (comm_s) { // See next 2 slides
+      	if (new_comm.read() == true) {
+      	  comm_s = comm.read(); // Sample command port
+      	  switch (comm_s) { // See next 2 slides
 
-	    case RDBLK:
-	      addr_s = addr.read();
-	      data_s = memory[addr_s];
-	      cout << "@" << sc_time_stamp() << ": RDBLK-0, address = " << addr_s << ", data = " << data_s << endl;
-	      wait();
+      	    case RDBLK:
+      	      addr_s = addr.read();
+      	      data_s = memory[addr_s];
+      	      cout << "@" << sc_time_stamp() << ": RDBLK-0, address = " << addr_s << ", data = " << data_s << endl;
+      	      wait();
 
-	      addr_s++;
-	      data_s = memory[addr_s]; // Increment address & load data port
-	      cout << "@" << sc_time_stamp() << ": RDBLK-1, address = " << addr_s << ", data = " << data_s << endl;
-	      wait();
+      	      addr_s++;
+      	      data_s = memory[addr_s]; // Increment address & load data port
+      	      cout << "@" << sc_time_stamp() << ": RDBLK-1, address = " << addr_s << ", data = " << data_s << endl;
+      	      wait();
 
-	      addr_s++;
-	      data_s = memory[addr_s]; // Increment address & load data port
-	      cout << "@" << sc_time_stamp() << ": RDBLK-2, address = " << addr_s << ", data = " << data_s << endl;
-	      wait();
+      	      addr_s++;
+      	      data_s = memory[addr_s]; // Increment address & load data port
+      	      cout << "@" << sc_time_stamp() << ": RDBLK-2, address = " << addr_s << ", data = " << data_s << endl;
+      	      wait();
 
-	      addr_s++;
-	      data_s = memory[addr_s]; // Increment address & load data port
-	      cout << "@" << sc_time_stamp() << ": RDBLK-3, address = " << addr_s << ", data = " << data_s << endl;
-	      wait();
+      	      addr_s++;
+      	      data_s = memory[addr_s]; // Increment address & load data port
+      	      cout << "@" << sc_time_stamp() << ": RDBLK-3, address = " << addr_s << ", data = " << data_s << endl;
+      	      wait();
 
-	    break;
+      	    break;
 
-	    case WTBYT:
-	      addr_s = addr.read();
-	      data_s = data.read(); // Sample address & data ports
-	      cout << "@" << sc_time_stamp() << ": WTBYT, address = " << addr_s << ", data = " << data_s << endl;
-	      wait();
-	      memory[addr_s] = data_s; // After 1 cycle, write into memory space
-	    break;
+      	    case WTBYT:
+      	      addr_s = addr.read();
+      	      data_s = data.read(); // Sample address & data ports
+      	      cout << "@" << sc_time_stamp() << ": WTBYT, address = " << addr_s << ", data = " << data_s << endl;
+      	      wait();
+      	      memory[addr_s] = data_s; // After 1 cycle, write into memory space
+      	    break;
 
-	    case RDBYT:
-	      addr_s = addr.read(); // Sample address port
-	      data_s = memory[addr_s]; // Read from memory space
-	      cout << "@" << sc_time_stamp() << ": RDBYT, address = " << addr_s << ", data = " << data_s << endl;
-	      wait();
-	      data.write(data_s); // After 1 cycle, output to data port
-	    break;
+      	    case RDBYT:
+      	      addr_s = addr.read(); // Sample address port
+      	      data_s = memory[addr_s]; // Read from memory space
+      	      cout << "@" << sc_time_stamp() << ": RDBYT, address = " << addr_s << ", data = " << data_s << endl;
+      	      wait();
+      	      data.write(data_s); // After 1 cycle, output to data port
+      	    break;
 
-	    case WTBLK:
-	      addr_s = addr.read();
-	      data_s = data.read(); // Sample address & data ports
-	      cout << "@" << sc_time_stamp() << ": WTBLK-0, address = " << addr_s << ", data = " << data_s << endl;
-	      wait();
+      	    case WTBLK:
+      	      addr_s = addr.read();
+      	      data_s = data.read(); // Sample address & data ports
+      	      cout << "@" << sc_time_stamp() << ": WTBLK-0, address = " << addr_s << ", data = " << data_s << endl;
+      	      wait();
 
-	      memory[addr_s] = data_s; // After 1 cycle, write into memory space
-	      addr_s++;
-	      data_s = data.read(); // Increment address & sample data port
-	      cout << "@" << sc_time_stamp() << ": WTBLK-1, address = " << addr_s << ", data = " << data_s << endl;
-	      wait();
+      	      memory[addr_s] = data_s; // After 1 cycle, write into memory space
+      	      addr_s++;
+      	      data_s = data.read(); // Increment address & sample data port
+      	      cout << "@" << sc_time_stamp() << ": WTBLK-1, address = " << addr_s << ", data = " << data_s << endl;
+      	      wait();
 
-	      memory[addr_s] = data_s; // After 1 cycle, write into memory space
-	      addr_s++;
-	      data_s = data.read(); // Increment address & sample data port
-	      cout << "@" << sc_time_stamp() << ": WTBLK-2, address = " << addr_s << ", data = " << data_s << endl;
-	      wait();
+      	      memory[addr_s] = data_s; // After 1 cycle, write into memory space
+      	      addr_s++;
+      	      data_s = data.read(); // Increment address & sample data port
+      	      cout << "@" << sc_time_stamp() << ": WTBLK-2, address = " << addr_s << ", data = " << data_s << endl;
+      	      wait();
 
-	      memory[addr_s] = data_s; // After 1 cycle, write into memory space
-	      addr_s++;
-	      data_s = data.read(); // Increment address & sample data port
-	      cout << "@" << sc_time_stamp() << ": WTBLK-3, address = " << addr_s << ", data = " << data_s << endl;
-	      wait();
+      	      memory[addr_s] = data_s; // After 1 cycle, write into memory space
+      	      addr_s++;
+      	      data_s = data.read(); // Increment address & sample data port
+      	      cout << "@" << sc_time_stamp() << ": WTBLK-3, address = " << addr_s << ", data = " << data_s << endl;
+      	      wait();
 
-	      memory[addr_s] = data_s; // After 1 cycle, write into memory space
-	    break;
+      	      memory[addr_s] = data_s; // After 1 cycle, write into memory space
+      	    break;
 
-	    default:
-	      cout << "Illegal// Increment address & sample data port command : " << comm_s << endl;
-	    break;
-	  }
+      	    default:
+      	      cout << "Illegal// Increment address & sample data port command : " << comm_s << endl;
+      	    break;
+      	  }
 
-	  complete.write(true);
+      	  complete.write(true);
 
-	  while (new_comm.read() == true) {
-	    if (reset.read() == true) break;
-	    wait();
-	  }
+      	  while (new_comm.read() == true) {
+      	    if (reset.read() == true) break;
+      	    wait();
+      	  }
 
-	  if ((comm_s == RDBYT)) data.write(Z); // Stop driving (a finished read)
-	  complete.write(false);
-	}
+      	  if ((comm_s == RDBYT)) data.write(Z); // Stop driving (a finished read)
+      	  complete.write(false);
+      	}
       }
       wait();
     }

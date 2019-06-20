@@ -86,6 +86,7 @@ SC_MODULE(testbench){
       data_read = data.read();
       wait();
       cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data_read << endl;
+      cout << "@" << sc_time_stamp() << ": Data Release Check, data = " << data << endl;
       cout << endl;
 
       //Simulation end
