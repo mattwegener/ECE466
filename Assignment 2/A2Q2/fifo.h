@@ -12,7 +12,7 @@ template <class T, int size> class fifo : public sc_module, public fifo_out_if <
     T write_data;
 
   public:
-    SC_HAS_PROCESS (stack);
+    SC_HAS_PROCESS (fifo);
 
     stack (sc_module_name nm) : sc_module (nm)
     {
