@@ -110,7 +110,7 @@ SC_MODULE(testbench){
       cout << "Expectations: data = 11000011, 11000011, 11000011, 11000011" << endl;
       data.write(0xC3);
       addr.write(230);
-      comm.write(WTBYT);
+      comm.write(WTBLK);
       wait();
       new_comm.write(true);
       while(!complete.read()){
