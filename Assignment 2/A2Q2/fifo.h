@@ -14,7 +14,7 @@ template <class T, int size> class fifo : public sc_module, public fifo_out_if <
   public:
     SC_HAS_PROCESS (fifo);
 
-    stack (sc_module_name nm) : sc_module (nm)
+    fifo (sc_module_name nm) : sc_module (nm)
     {
       free = size;
       ri = 0;
