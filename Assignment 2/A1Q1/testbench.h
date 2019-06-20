@@ -65,7 +65,6 @@ SC_MODULE(testbench){
       }
       new_comm.write(false);
       wait();
-      wait();
       addr.write(1);
       comm.write(RDBYT);
       wait();
