@@ -17,7 +17,7 @@ template <class T> class producer : public sc_module
       {
         wait();
         if (out->write(data))
-          cout << "@" << setw(6) << sc_time_stamp() << setw(4) << "  Fifo Write:" << setw(4) << data << endl;;
+          cout << "@" << setw(6) << sc_time_stamp() << setw(12) << "Fifo Write:" << setw(2) << data << endl;;
         data = (data+1) % 10;
 
       }
