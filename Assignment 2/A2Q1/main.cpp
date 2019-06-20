@@ -40,13 +40,15 @@ int sc_main(int argc, char* argv[])
 
     // Rest of sc_main ...
     sc_trace_file* Tf = sc_create_vcd_trace_file("Filter_traces");
-    Tf->set_time_unit(1, SC_NS);
-    /*
-    sc_trace(Tf, Xin  , "X" );
-    sc_trace(Tf, Yout  , "Y" );
-    sc_trace(Tf, reset, "RST");
-    */
-    sc_start(2000000, SC_NS);  // run for 201 ns
+    Tf->set_time_unit(1, SC_NS); // Time unit is 1 ns
+    sc_trace(Tf, data, "data");
+    sc_trace(Tf, addr, "addr");
+    sc_trace(Tf, comm, "comm");
+    sc_trace(Tf, new_comm, "new_comm");
+    sc_trace(Tf, complete, "complete");
+    sc_trace(Tf, reset, "reset");
+
+    sc_start();  // run for 201 ns
     sc_close_vcd_trace_file(Tf);
 
     return 0;
