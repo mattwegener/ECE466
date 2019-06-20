@@ -13,7 +13,7 @@ int sc_main(int argc, char* argv[])
     sc_signal_rv <8> data;
     sc_clock clk("TestClock", 10, SC_NS, 0.5, 1, SC_NS);
     // _rv needed because of multiple drivers
-    
+
     // Memory module instance:
     mem_ctrl MC("MC");
     testbench TB("Testbench");
@@ -27,7 +27,7 @@ int sc_main(int argc, char* argv[])
     TB.complete(complete);
     TB.clk(clk);
     TB.reset(reset);
-    
+
     MC.clk(clk);
     MC.reset(reset);
     MC.data(data);
@@ -45,7 +45,7 @@ int sc_main(int argc, char* argv[])
     sc_trace(Tf, Yout  , "Y" );
     sc_trace(Tf, reset, "RST");
     */
-    sc_start(201, SC_NS);  // run for 201 ns
+    sc_start(2000000, SC_NS);  // run for 201 ns
     sc_close_vcd_trace_file(Tf);
 
     return 0;
