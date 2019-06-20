@@ -46,6 +46,8 @@ SC_MODULE(testbench){
       new_comm.write(false);
       wait();
       wait();
+
+
       cout << "Test 2: Checking Data bus is properely released" <<endl;
       cout << "Expectations: Data = ZZZZZZZZ" <<endl;
       data_read = data.read();
@@ -55,8 +57,8 @@ SC_MODULE(testbench){
       //Write to byte and check data bus release
       cout << "Test 3: Write to byte then read" << endl;
       cout << "Expectations: data = 11110000" << endl;
-      addr.write(1);
       data.write(0xF0);
+      addr.write(1);
       comm.write(WTBYT);
       wait();
       new_comm.write(true);
@@ -65,6 +67,7 @@ SC_MODULE(testbench){
       }
       new_comm.write(false);
       wait();
+
       addr.write(1);
       comm.write(RDBYT);
       wait();
@@ -75,6 +78,8 @@ SC_MODULE(testbench){
       new_comm.write(false);
       wait();
       wait();
+
+      
       cout << "Test 4: Checking Data bus is properely released" <<endl;
       cout << "Expectations: Data = ZZZZZZZZ" <<endl;
       data_read = data.read();
