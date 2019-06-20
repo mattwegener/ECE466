@@ -117,6 +117,7 @@ SC_MODULE(testbench){
         wait();
       }
       new_comm.write(false);
+      data.write(Z);
       wait();
       wait();
 
