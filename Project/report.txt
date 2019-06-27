@@ -1,0 +1,25 @@
+
+*** ECE 466/568 Project Report Guidelines ***
+
+Your project report should include:
+1. Problem description and solution outline.
+2. SW-HW handshaking protocol timing diagram, with discussion.
+3. State diagram of the handshaking protocol for HW, with discussion.
+4. Flow chart of the handshaking protocol for SW, with discussion.
+5. Block diagram of the HW multiplier datapath, with discussion.
+6. State diagram of the HW multiplier controller, with discussion.
+7. SystemC code snippet(s) of the HW multiplier, with discussion.
+8. SystemC code snippet(s) of the SW function communicating with HW multiplier, with discussion.
+9. Recommendations.
+
+
+The project mark is distributed as follows:
+25% - correct output,
+50% - correct SystemC implementation,
+25% - project report.
+
+
+If you complete the bonus part, your report must also include:
+10. Block diagram of the HW divider datapath, with discussion.
+11. State diagram of the HW divider controller, with discussion.
+12. Recommendations.
