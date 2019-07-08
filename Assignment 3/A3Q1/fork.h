@@ -1,4 +1,4 @@
-##include "systemc.h"
+#include "systemc.h"
 
 // This module forks a dataflow stream
 template <class T> SC_MODULE (DF_Fork) {

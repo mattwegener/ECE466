@@ -26,6 +26,6 @@ int sc_main (int argc, char* argv[]) {
 
   // Start simulation without time limit
   // The printer module is responsible for stopping the simulation
-  sc_start (-1);
+  sc_start ();
   return 0;
 }
