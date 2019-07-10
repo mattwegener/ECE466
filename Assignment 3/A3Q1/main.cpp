@@ -65,12 +65,12 @@ int sc_main (int argc, char* argv[]) {
   adapter_read.ready(adapter_ready);
 
   //Fork
-  fork.input (adder_out);
-  fork.output1 (feedback);
-  fork.output2 (printer_in);
+  fork.input(adder_out);
+  fork.output1(feedback);
+  fork.output2(printer_in);
 
   // Start simulation without time limit
   // The printer module is responsible for stopping the simulation
-  sc_start ();
+  sc_start();
   return 0;
 }
