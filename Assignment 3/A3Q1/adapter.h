@@ -37,7 +37,7 @@ template <class T> class FIFO_READ_HS : public sc_module, public sc_fifo_in_if <
       return 0;
     }
 
-    const sc_event& data_wrtten_event() const {
+    const sc_event& data_written_event() const {
       static sc_event dummy;
       assert(0);
       return (dummy);
