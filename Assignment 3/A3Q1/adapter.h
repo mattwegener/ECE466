@@ -27,17 +27,17 @@ template <class T> class FIFO_READ_HS : public sc_module, public sc_fifo_in_if <
       return(tmp);
     }
 
-    virtual bool nb_read(T&){
+    bool nb_read(T&){
       assert(0);
       return false;
     }
 
-    virtual int num_available() const {
+    int num_available() const {
       assert(0);
       return 0;
     }
 
-    virtual sc_event& data_wrtten_event() const {
+    const sc_event& data_wrtten_event() const {
       static sc_event dummy;
       assert(0);
       return (dummy);
