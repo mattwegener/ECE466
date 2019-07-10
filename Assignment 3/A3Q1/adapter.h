@@ -22,7 +22,9 @@ template <class T> class FIFO_READ_HS : public sc_module, public sc_fifo_in_if <
     }
 
     virtual T read(){
-      return read(T tmp);
+      T tmp;
+      read(tmp);
+      return(tmp);
     }
 
     virtual bool nb_read(T&){
@@ -30,14 +32,15 @@ template <class T> class FIFO_READ_HS : public sc_module, public sc_fifo_in_if <
       return false;
     }
 
-    virtual int num_available() {
+    virtual int num_available() const {
       assert(0);
       return 0;
     }
 
     virtual sc_event& data_wrtten_event() const {
+      static sc_event dummy;
       assert(0);
-      return (static sc_event dummy);
+      return (dummy);
     }
 
     SC_CTOR(FIFO_READ_HS) {
