@@ -3,6 +3,8 @@
 #include "adder.h"
 #include "gen.h"
 #include "fork.h"
+#include "hw_fifo.h"
+#include "adapter.h"
 #include <iostream>
 #include <iomanip>
 
