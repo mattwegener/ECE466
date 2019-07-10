@@ -65,7 +65,7 @@ int sc_main (int argc, char* argv[]) {
   adapter_read.ready(adapter_ready);
 
   //Fork
-  fork.input(adder_out);
+  fork.input(adapter_read);
   fork.output1(feedback);
   fork.output2(printer_in);
 
