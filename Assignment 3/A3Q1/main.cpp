@@ -15,7 +15,7 @@ int sc_main (int argc, char* argv[]) {
 
   //DF_Adder <int> adder ("adder");
   DF_Const <int> constant ("constant", 1); // constant = 1
-  DF_Fork <int> fork("fork");
+  DF_Fork <int> fork ("fork");
   DF_Printer <int> printer ("printer", 10); // 10 interations
 
   //sc_fifo <int> adder_out ("adder_out", 1); // FIFO of size 1
@@ -24,7 +24,7 @@ int sc_main (int argc, char* argv[]) {
   sc_fifo <int> feedback ("feedback", 1); // FIFO of size 1
 
   HW_Adder <int> adder ("adder");
-  FIFO_READ_HS <int> adapter_read("Read_Adapter");
+  FIFO_READ_HS <int> adapter_read ("Read_Adapter");
   hw_fifo <int> adder_out("adder_out",1);
 
   //Hardware Signals
