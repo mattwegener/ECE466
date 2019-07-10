@@ -10,7 +10,7 @@ template <class T> class FIFO_READ_HS : public sc_module, public sc_fifo_in_if <
     sc_in <bool> valid;
     sc_out <bool> ready;
 
-    void read(T& x) { // blocking read
+    virtual void read(T& x) { // blocking read
       ready.write(true); // signal that ready to consume data
       // Wait until data is valid
       do {
@@ -21,8 +21,10 @@ template <class T> class FIFO_READ_HS : public sc_module, public sc_fifo_in_if <
       ready.write(false); // read data, stop consumption for now
     }
 
-
-
+    virtual T read() assert(0);
+    virtual bool nb_read(T&) assert(0);
+    virtual int num_available() assert(0);
+    virtual sc_event& data_wrtten_event() const assert(0);
 
     SC_CTOR(FIFO_READ_HS) {
       ready.initialize(false);
