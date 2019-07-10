@@ -62,7 +62,7 @@ int sc_main (int argc, char* argv[]) {
   adapter_read.clock(clk);
   adapter_read.data(fork_data);
   adapter_read.valid(adapter_valid);
-  adapter_read.ready(adapter_ready)
+  adapter_read.ready(adapter_ready);
 
   //Fork
   fork.input (adder_out);
