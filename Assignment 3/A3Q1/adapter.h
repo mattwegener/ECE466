@@ -21,10 +21,24 @@ template <class T> class FIFO_READ_HS : public sc_module, public sc_fifo_in_if <
       ready.write(false); // read data, stop consumption for now
     }
 
-    virtual T read() assert(0);
-    virtual bool nb_read(T&) assert(0);
-    virtual int num_available() assert(0);
-    virtual sc_event& data_wrtten_event() const assert(0);
+    virtual T read(){
+      return read(T tmp);
+    }
+
+    virtual bool nb_read(T&){
+      assert(0);
+      return false;
+    }
+
+    virtual int num_available() {
+      assert(0);
+      return 0;
+    }
+
+    virtual sc_event& data_wrtten_event() const {
+      assert(0);
+      return (static sc_event dummy);
+    }
 
     SC_CTOR(FIFO_READ_HS) {
       ready.initialize(false);
