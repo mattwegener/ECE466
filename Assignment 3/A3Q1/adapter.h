@@ -1,4 +1,4 @@
-##include "systemc.h"
+#include "systemc.h"
 
 // This adapter converts the FIFO read interface into a bi-directional handshake protocol
 // It is a hierarchical channel that implements the sc_fifo_in_if interface
