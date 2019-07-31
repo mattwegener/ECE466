@@ -38,7 +38,7 @@ SC_MODULE(reg){
 
   void do_reg(){
     while(true){
-      if(load.read()
+      if(load.read()){
         out.write(in.read());
       }
       wait();
