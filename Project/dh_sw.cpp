@@ -1,7 +1,7 @@
 /* DHDEMO - demonstration program for Diffie-Hellman extensions to RSAREF
  */
 
-/* Copyright (C) 1993 RSA Laboratories, a division of 
+/* Copyright (C) 1993 RSA Laboratories, a division of
    RSA Data Security, Inc. All rights reserved.
  */
 
@@ -95,26 +95,26 @@ unsigned int inputLen                      /* length of input block */
       < ((UINT4)inputLen << 3))
     context->count[1]++;
   context->count[1] += ((UINT4)inputLen >> 29);
-  
+
   partLen = 64 - index;
-  
+
   /* Transform as many times as possible.
    */
   if (inputLen >= partLen) {
     MD5_memcpy
       ((POINTER)&context->buffer[index], (POINTER)input, partLen);
     MD5Transform (context->state, context->buffer);
-  
+
     for (i = partLen; i + 63 < inputLen; i += 64)
       MD5Transform (context->state, &input[i]);
-    
+
     index = 0;
   }
   else
     i = 0;
-  
+
   /* Buffer remaining input */
-  MD5_memcpy 
+  MD5_memcpy
     ((POINTER)&context->buffer[index], (POINTER)&input[i],
      inputLen-i);
 }
@@ -138,13 +138,13 @@ MD5_CTX *context                                        /* context */
   index = (unsigned int)((context->count[0] >> 3) & 0x3f);
   padLen = (index < 56) ? (56 - index) : (120 - index);
   MD5Update (context, PADDING, padLen);
-  
+
   /* Append length (before padding) */
   MD5Update (context, bits, 8);
 
   /* Store state in digest */
   Encode (digest, context->state, 16);
-  
+
   /* Zeroize sensitive information.
    */
   MD5_memset ((POINTER)context, 0, sizeof (*context));
@@ -158,7 +158,7 @@ unsigned char block[64]
 )
 {
   UINT4 a = state[0], b = state[1], c = state[2], d = state[3], x[16];
-  
+
   Decode (x, block, 64);
 
   /* Round 1 */
@@ -237,7 +237,7 @@ unsigned char block[64]
   state[1] += b;
   state[2] += c;
   state[3] += d;
-  
+
   /* Zeroize sensitive information.
    */
   MD5_memset ((POINTER)x, 0, sizeof (x));
@@ -287,7 +287,7 @@ unsigned int len
 )
 {
   unsigned int i;
-  
+
   for (i = 0; i < len; i++)
     output[i] = input[i];
 }
@@ -301,7 +301,7 @@ unsigned int len
 )
 {
   unsigned int i;
-  
+
   for (i = 0; i < len; i++)
     ((char *)output)[i] = (char)value;
 }
@@ -317,12 +317,12 @@ R_RANDOM_STRUCT *randomStruct                           /* random structure */
 {
   MD5_CTX context;
   unsigned int available, i;
-  
+
   if (randomStruct->bytesNeeded)
     return (RE_NEED_RANDOM);
-  
+
   available = randomStruct->outputAvailable;
-  
+
   while (blockLen > available) {
     R_memcpy
       ((POINTER)block, (POINTER)&randomStruct->output[16-available],
@@ -342,7 +342,7 @@ R_RANDOM_STRUCT *randomStruct                           /* random structure */
         break;
   }
 
-  R_memcpy 
+  R_memcpy
     ((POINTER)block, (POINTER)&randomStruct->output[16-available], blockLen);
   randomStruct->outputAvailable = available - blockLen;
 
@@ -356,51 +356,23 @@ R_RANDOM_STRUCT *randomStruct                           /* random structure */
 
    Lengths: a[2].
  */
-void dh_sw::NN_DigitMult (
-NN_DIGIT a[2], 
-NN_DIGIT b, 
-NN_DIGIT c
-)
+void dh_sw::NN_DigitMult (NN_DIGIT a[2], NN_DIGIT b, NN_DIGIT c)
 {
 
     out_data_1.write(b);
-    out_data_2.write(c);  
+    out_data_2.write(c);
     hw_mult_enable.write(true);
-    wait(10, SC_NS);		// communication delay (10 ns)
-        
-// This computation is now performed in hardware, taking 100 ns...
-/*
-  NN_DIGIT t, u;
-  NN_HALF_DIGIT bHigh, bLow, cHigh, cLow;
 
-  bHigh = (NN_HALF_DIGIT)HIGH_HALF (b);
-  bLow = (NN_HALF_DIGIT)LOW_HALF (b);
-  cHigh = (NN_HALF_DIGIT)HIGH_HALF (c);
-  cLow = (NN_HALF_DIGIT)LOW_HALF (c);
+    //Wait until hardware mult is complete
+    while(!hw_mult_done.read()) wait();
 
-  a[0] = (NN_DIGIT)bLow * (NN_DIGIT)cLow;
-  t = (NN_DIGIT)bLow * (NN_DIGIT)cHigh;
-  u = (NN_DIGIT)bHigh * (NN_DIGIT)cLow;
-  a[1] = (NN_DIGIT)bHigh * (NN_DIGIT)cHigh;
-  
-  if ((t += u) < u)
-    a[1] += TO_HIGH_HALF (1);
-  u = TO_HIGH_HALF (t);
-  
-  if ((a[0] += u) < u)
-    a[1]++;
-  a[1] += HIGH_HALF (t);
-*/
-
-    wait(100, SC_NS);		// hardware multiplication delay (100 ns)
-    wait(10, SC_NS);		// communication delay (10 ns)
-    
     a[0] = in_data_low.read();
     a[1] = in_data_high.read();
-  
+
     hw_mult_enable.write(false);
-    wait(10, SC_NS);		// communication delay (10 ns)
-   
+    //loop till hardware replies by dessarting done signal
+    while(hw_mult_done.read()) wait();
+
 }
 
 
@@ -411,8 +383,8 @@ NN_DIGIT c
    normalized.
  */
 void dh_sw::NN_DigitDiv (
-NN_DIGIT *a, 
-NN_DIGIT b[2], 
+NN_DIGIT *a,
+NN_DIGIT b[2],
 NN_DIGIT c
 )
 {
@@ -432,7 +404,7 @@ NN_DIGIT c
     aHigh = (NN_HALF_DIGIT)HIGH_HALF (t[1]);
   else
     aHigh = (NN_HALF_DIGIT)(t[1] / (cHigh + 1));
-    
+
   u = (NN_DIGIT)aHigh * (NN_DIGIT)cLow;
   v = (NN_DIGIT)aHigh * (NN_DIGIT)cHigh;
   if ((t[0] -= TO_HIGH_HALF (u)) > (MAX_NN_DIGIT - TO_HIGH_HALF (u)))
@@ -455,7 +427,7 @@ NN_DIGIT c
     aLow = (NN_HALF_DIGIT)LOW_HALF (t[1]);
   else
     aLow = (NN_HALF_DIGIT)((TO_HIGH_HALF (t[1]) + HIGH_HALF (t[0])) / (cHigh + 1));
-      
+
   u = (NN_DIGIT)aLow * (NN_DIGIT)cLow;
   v = (NN_DIGIT)aLow * (NN_DIGIT)cHigh;
   if ((t[0] -= u) > (MAX_NN_DIGIT - u))
@@ -471,7 +443,7 @@ NN_DIGIT c
       t[1]--;
     aLow++;
   }
-  
+
   *a = TO_HIGH_HALF (aHigh) + aLow;
 }
 
@@ -495,14 +467,14 @@ unsigned int len
   NN_DIGIT t;
   int j;
   unsigned int i, u;
-  
+
   for (i = 0, j = len - 1; i < digits && j >= 0; i++) {
     t = 0;
     for (u = 0; j >= 0 && u < NN_DIGIT_BITS; j--, u += 8)
       t |= ((NN_DIGIT)b[j]) << u;
     a[i] = t;
   }
-  
+
   for (; i < digits; i++)
     a[i] = 0;
 }
@@ -518,7 +490,7 @@ void dh_sw::NN_Encode (
 unsigned char *a,
 unsigned int len,
 NN_DIGIT *b,
-unsigned int digits 
+unsigned int digits
 )
 {
   NN_DIGIT t;
@@ -540,7 +512,7 @@ unsigned int digits
    Lengths: a[digits], b[digits].
  */
 void dh_sw::NN_Assign (
-NN_DIGIT *a, 
+NN_DIGIT *a,
 NN_DIGIT *b,
 unsigned int digits
 )
@@ -573,7 +545,7 @@ unsigned int digits
  */
 void dh_sw::NN_Assign2Exp (
 NN_DIGIT *a,
-unsigned int b, 
+unsigned int b,
 unsigned int digits
 )
 {
@@ -590,8 +562,8 @@ unsigned int digits
    Lengths: a[digits], b[digits], c[digits].
  */
 NN_DIGIT dh_sw::NN_Add (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
+NN_DIGIT *a,
+NN_DIGIT *b,
 NN_DIGIT *c,
 unsigned int digits
 )
@@ -619,8 +591,8 @@ unsigned int digits
    Lengths: a[digits], b[digits], c[digits].
  */
 NN_DIGIT dh_sw::NN_Sub (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
+NN_DIGIT *a,
+NN_DIGIT *b,
 NN_DIGIT *c,
 unsigned int digits
 )
@@ -649,8 +621,8 @@ unsigned int digits
    Assumes digits < MAX_NN_DIGITS.
  */
 void dh_sw::NN_Mult (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
+NN_DIGIT *a,
+NN_DIGIT *b,
 NN_DIGIT *c,
 unsigned int digits
 )
@@ -659,15 +631,15 @@ unsigned int digits
   unsigned int bDigits, cDigits, i;
 
   NN_AssignZero (t, 2 * digits);
-  
+
   bDigits = NN_Digits (b, digits);
   cDigits = NN_Digits (c, digits);
 
   for (i = 0; i < bDigits; i++)
     t[i+cDigits] += NN_AddDigitMult (&t[i], &t[i], b[i], c, cDigits);
-  
+
   NN_Assign (a, t, 2 * digits);
-  
+
   /* Zeroize potentially sensitive information.
    */
   R_memset ((POINTER)t, 0, sizeof (t));
@@ -679,18 +651,18 @@ unsigned int digits
    Requires c < NN_DIGIT_BITS.
  */
 NN_DIGIT dh_sw::NN_LShift (
-NN_DIGIT *a, 
+NN_DIGIT *a,
 NN_DIGIT *b,
-unsigned int c, 
+unsigned int c,
 unsigned int digits
 )
 {
   NN_DIGIT bi, carry;
   unsigned int i, t;
-  
+
   if (c >= NN_DIGIT_BITS)
     return (0);
-  
+
   t = NN_DIGIT_BITS - c;
 
   carry = 0;
@@ -700,7 +672,7 @@ unsigned int digits
     a[i] = (bi << c) | carry;
     carry = c ? (bi >> t) : 0;
   }
-  
+
   return (carry);
 }
 
@@ -710,19 +682,19 @@ unsigned int digits
    Requires: c < NN_DIGIT_BITS.
  */
 NN_DIGIT dh_sw::NN_RShift (
-NN_DIGIT *a, 
+NN_DIGIT *a,
 NN_DIGIT *b,
-unsigned int c, 
+unsigned int c,
 unsigned int digits
 )
 {
   NN_DIGIT bi, carry;
   int i;
   unsigned int t;
-  
+
   if (c >= NN_DIGIT_BITS)
     return (0);
-  
+
   t = NN_DIGIT_BITS - c;
 
   carry = 0;
@@ -732,7 +704,7 @@ unsigned int digits
     a[i] = (bi >> c) | carry;
     carry = c ? (bi << t) : 0;
   }
-  
+
   return (carry);
 }
 
@@ -743,10 +715,10 @@ unsigned int digits
            dDigits < MAX_NN_DIGITS.
  */
 void dh_sw::NN_Div (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
-NN_DIGIT *c, 
-unsigned int cDigits, 
+NN_DIGIT *a,
+NN_DIGIT *b,
+NN_DIGIT *c,
+unsigned int cDigits,
 NN_DIGIT *d,
 unsigned int dDigits
 )
@@ -754,11 +726,11 @@ unsigned int dDigits
   NN_DIGIT ai, cc[2*MAX_NN_DIGITS+1], dd[MAX_NN_DIGITS], t;
   int i;
   unsigned int ddDigits, shift;
-  
+
   ddDigits = NN_Digits (d, dDigits);
   if (ddDigits == 0)
     return;
-  
+
   /* Normalize operands.
    */
   shift = NN_DIGIT_BITS - NN_DigitBits (d[ddDigits-1]);
@@ -766,7 +738,7 @@ unsigned int dDigits
   cc[cDigits] = NN_LShift (cc, c, shift, cDigits);
   NN_LShift (dd, d, shift, ddDigits);
   t = dd[ddDigits-1];
-  
+
   NN_AssignZero (a, cDigits);
 
   for (i = cDigits-ddDigits; i >= 0; i--) {
@@ -784,10 +756,10 @@ unsigned int dDigits
       ai++;
       cc[i+ddDigits] -= NN_Sub (&cc[i], &cc[i], dd, ddDigits);
     }
-    
+
     a[i] = ai;
   }
-  
+
   /* Restore result.
    */
   NN_AssignZero (b, dDigits);
@@ -805,17 +777,17 @@ unsigned int dDigits
    Assumes c > 0, bDigits < 2 * MAX_NN_DIGITS, cDigits < MAX_NN_DIGITS.
  */
 void dh_sw::NN_Mod (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
+NN_DIGIT *a,
+NN_DIGIT *b,
 unsigned int bDigits,
 NN_DIGIT *c,
 unsigned int cDigits
 )
 {
   NN_DIGIT t[2 * MAX_NN_DIGITS];
-  
+
   NN_Div (t, a, b, bDigits, c, cDigits);
-  
+
   /* Zeroize potentially sensitive information.
    */
   R_memset ((POINTER)t, 0, sizeof (t));
@@ -827,9 +799,9 @@ unsigned int cDigits
    Assumes d > 0, digits < MAX_NN_DIGITS.
  */
 void dh_sw::NN_ModMult (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
-NN_DIGIT *c, 
+NN_DIGIT *a,
+NN_DIGIT *b,
+NN_DIGIT *c,
 NN_DIGIT *d,
 unsigned int digits
 )
@@ -838,7 +810,7 @@ unsigned int digits
 
   NN_Mult (t, b, c, digits);
   NN_Mod (a, t, 2 * digits, d, digits);
-  
+
   /* Zeroize potentially sensitive information.
    */
   R_memset ((POINTER)t, 0, sizeof (t));
@@ -850,10 +822,10 @@ unsigned int digits
    Assumes d > 0, cDigits > 0, dDigits < MAX_NN_DIGITS.
  */
 void dh_sw::NN_ModExp (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
-NN_DIGIT *c, 
-unsigned int cDigits, 
+NN_DIGIT *a,
+NN_DIGIT *b,
+NN_DIGIT *c,
+unsigned int cDigits,
 NN_DIGIT *d,
 unsigned int dDigits
 )
@@ -867,14 +839,14 @@ unsigned int dDigits
   NN_Assign (bPower[0], b, dDigits);
   NN_ModMult (bPower[1], bPower[0], b, d, dDigits);
   NN_ModMult (bPower[2], bPower[1], b, d, dDigits);
-  
+
   NN_ASSIGN_DIGIT (t, 1, dDigits);
 
   cDigits = NN_Digits (c, cDigits);
   for (i = cDigits - 1; i >= 0; i--) {
     ci = c[i];
     ciBits = NN_DIGIT_BITS;
-    
+
     /* Scan past leading zero bits of most significant digit.
      */
     if (i == (int)(cDigits - 1)) {
@@ -893,9 +865,9 @@ unsigned int dDigits
         NN_ModMult (t, t, bPower[s-1], d, dDigits);
     }
   }
-  
+
   NN_Assign (a, t, dDigits);
-  
+
   /* Zeroize potentially sensitive information.
    */
   R_memset ((POINTER)bPower, 0, sizeof (bPower));
@@ -903,13 +875,13 @@ unsigned int dDigits
 }
 
 /* Compute a = 1/b mod c, assuming inverse exists.
-   
+
    Lengths: a[digits], b[digits], c[digits].
    Assumes gcd (b, c) = 1, digits < MAX_NN_DIGITS.
  */
 void dh_sw::NN_ModInv (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
+NN_DIGIT *a,
+NN_DIGIT *b,
 NN_DIGIT *c,
 unsigned int digits
 )
@@ -938,7 +910,7 @@ unsigned int digits
     NN_Assign (v3, t3, digits);
     u1Sign = -u1Sign;
   }
-  
+
   /* Negate result if sign is negative.
     */
   if (u1Sign < 0)
@@ -964,8 +936,8 @@ unsigned int digits
    Assumes b > c, digits < MAX_NN_DIGITS.
  */
 void dh_sw::NN_Gcd (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
+NN_DIGIT *a,
+NN_DIGIT *b,
 NN_DIGIT *c,
 unsigned int digits
 )
@@ -995,13 +967,13 @@ unsigned int digits
    Lengths: a[digits], b[digits].
  */
 int dh_sw::NN_Cmp (
-NN_DIGIT *a, 
+NN_DIGIT *a,
 NN_DIGIT *b,
 unsigned int digits
 )
 {
   int i;
-  
+
   for (i = digits - 1; i >= 0; i--) {
     if (a[i] > b[i])
       return (1);
@@ -1022,11 +994,11 @@ unsigned int digits
 )
 {
   unsigned int i;
-  
+
   for (i = 0; i < digits; i++)
     if (a[i])
       return (0);
-    
+
   return (1);
 }
 
@@ -1055,7 +1027,7 @@ unsigned int digits
 )
 {
   int i;
-  
+
   for (i = digits - 1; i >= 0; i--)
     if (a[i])
       break;
@@ -1068,9 +1040,9 @@ unsigned int digits
    Lengths: a[digits], b[digits], d[digits].
  */
 NN_DIGIT dh_sw::NN_AddDigitMult (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
-NN_DIGIT c, 
+NN_DIGIT *a,
+NN_DIGIT *b,
+NN_DIGIT c,
 NN_DIGIT *d,
 unsigned int digits
 )
@@ -1092,7 +1064,7 @@ unsigned int digits
       carry++;
     carry += t[1];
   }
-  
+
   return (carry);
 }
 
@@ -1101,9 +1073,9 @@ unsigned int digits
    Lengths: a[digits], b[digits], d[digits].
  */
 NN_DIGIT dh_sw::NN_SubDigitMult (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
-NN_DIGIT c, 
+NN_DIGIT *a,
+NN_DIGIT *b,
+NN_DIGIT c,
 NN_DIGIT *d,
 unsigned int digits
 )
@@ -1125,7 +1097,7 @@ unsigned int digits
       borrow++;
     borrow += t[1];
   }
-  
+
   return (borrow);
 }
 
@@ -1136,11 +1108,11 @@ NN_DIGIT a
 )
 {
   unsigned int i;
-  
+
   for (i = 0; i < NN_DIGIT_BITS; i++, a >>= 1)
     if (a == 0)
       break;
-    
+
   return (i);
 }
 
@@ -1153,14 +1125,14 @@ NN_DIGIT a
 
    Lengths: a[digits], b[digits], c[digits], d[digits].
    Assumes b < c, digits < MAX_NN_DIGITS.
-   
+
    Returns RE_NEED_RANDOM if randomStruct not seeded, RE_DATA if
    unsuccessful.
  */
 int dh_sw::GeneratePrime (
-NN_DIGIT *a, 
-NN_DIGIT *b, 
-NN_DIGIT *c, 
+NN_DIGIT *a,
+NN_DIGIT *b,
+NN_DIGIT *c,
 NN_DIGIT *d,
 unsigned int digits,
 R_RANDOM_STRUCT *randomStruct
@@ -1231,11 +1203,11 @@ unsigned int aDigits
   int status;
   NN_DIGIT t[1];
   unsigned int i;
-  
+
   unsigned int SMALL_PRIMES[4] = { 3, 5, 7, 11 };
-  
+
   status = 0;
-  
+
   for (i = 0; i < 4; i++) {
     NN_ASSIGN_DIGIT (t, SMALL_PRIMES[i], 1);
     if ((aDigits == 1) && ! NN_Cmp (a, t, 1))
@@ -1246,7 +1218,7 @@ unsigned int aDigits
       break;
     }
   }
-  
+
   /* Zeroize sensitive information.
    */
   i = 0;
@@ -1257,7 +1229,7 @@ unsigned int aDigits
 
 /* Returns nonzero iff a passes Fermat's test for witness 2.
    (All primes pass the test, and nearly all composites fail.)
-     
+
    Lengths: a[aDigits].
    Assumes aDigits < MAX_NN_DIGITS.
  */
@@ -1268,20 +1240,20 @@ unsigned int aDigits
 {
   int status;
   NN_DIGIT t[MAX_NN_DIGITS], u[MAX_NN_DIGITS];
-  
+
   NN_ASSIGN_DIGIT (t, 2, aDigits);
   NN_ModExp (u, t, a, aDigits, a, aDigits);
-  
+
   status = NN_EQUAL (t, u, aDigits);
-  
+
   /* Zeroize sensitive information.
    */
   R_memset ((POINTER)u, 0, sizeof (u));
-  
+
   return (status);
 }
 
-    
+
 /****************************************************************************/
 
 
@@ -1300,7 +1272,7 @@ R_RANDOM_STRUCT *randomStruct                           /* random structure */
   unsigned int pDigits;
 
   pDigits = (primeBits + NN_DIGIT_BITS - 1) / NN_DIGIT_BITS;
-  
+
   /* Generate subprime q between 2^(subPrimeBits-1) and
        2^subPrimeBits-1, searching in steps of 2.
    */
@@ -1312,7 +1284,7 @@ R_RANDOM_STRUCT *randomStruct                           /* random structure */
   NN_ASSIGN_DIGIT (v, 2, pDigits);
   if ((status = GeneratePrime (q, t, u, v, pDigits, randomStruct)))
     return (status);
-  
+
   /* Generate prime p between 2^(primeBits-1) and 2^primeBits-1,
        searching in steps of 2*q.
    */
@@ -1324,7 +1296,7 @@ R_RANDOM_STRUCT *randomStruct                           /* random structure */
   NN_LShift (v, q, 1, pDigits);
   if ((status = GeneratePrime (p, t, u, v, pDigits, randomStruct)))
     return (status);
-  
+
   /* Generate generator g for subgroup as 2^((p-1)/q) mod p.
    */
   NN_ASSIGN_DIGIT (g, 2, pDigits);
@@ -1364,13 +1336,13 @@ R_RANDOM_STRUCT *randomStruct                           /* random structure */
     return (status);
   NN_Decode (x, pDigits, privateValue, privateValueLen);
   xDigits = NN_Digits (x, pDigits);
-  
+
   /* Compute y = g^x mod p.
    */
   NN_ModExp (y, g, x, xDigits, p, pDigits);
 
   NN_Encode (publicValue, params->primeLen, y, pDigits);
-  
+
   /* Zeroize sensitive information.
    */
   R_memset ((POINTER)x, 0, sizeof (x));
@@ -1404,13 +1376,13 @@ R_DH_PARAMS *params                            /* Diffie-Hellman parameters */
 
   if (NN_Cmp (y, p, pDigits) >= 0)
     return (RE_DATA);
-  
+
   /* Compute z = y^x mod p.
    */
   NN_ModExp (z, y, x, xDigits, p, pDigits);
 
   NN_Encode (agreedKey, params->primeLen, z, pDigits);
-  
+
   /* Zeroize sensitive information.
    */
   R_memset ((POINTER)x, 0, sizeof (x));
@@ -1431,12 +1403,12 @@ unsigned int integerLen2
     integer2++;
     integerLen2--;
   }
-  
+
   if (integerLen2 == 0) {
     printf ("00\n");
     return;
   }
-  
+
   for (; integerLen2 > 0; integerLen2--)
     printf ("%02x ", (unsigned int)(*integer2++));
 
@@ -1454,23 +1426,23 @@ R_RANDOM_STRUCT *randomStruct
 )
 {
   static unsigned char seedByte[1] = {0};
-  
+
   MD5_CTX context;
   unsigned char digest[16];
   unsigned int i, x;
-  
+
   randomStruct->bytesNeeded = RANDOM_BYTES_NEEDED;
   R_memset ((POINTER)randomStruct->state, 0, sizeof (randomStruct->state));
   randomStruct->outputAvailable = 0;
-  
-  
+
+
   /* Initialize with all zero seed bytes, which will not yield an actual
        random number output.
    */
   while (1) {
     if (randomStruct->bytesNeeded == 0)
       break;
-    
+
     MD5Init (&context);
     MD5Update (&context, seedByte, 1);
     MD5Final (digest, &context);
@@ -1482,17 +1454,17 @@ R_RANDOM_STRUCT *randomStruct
       randomStruct->state[15-i] = (unsigned char)x;
       x >>= 8;
     }
-  
+
     if (randomStruct->bytesNeeded < 1)
       randomStruct->bytesNeeded = 0;
     else
       randomStruct->bytesNeeded -= 1;
-  
+
     /* Zeroize sensitive information.
      */
     R_memset ((POINTER)digest, 0, sizeof (digest));
     x = 0;
-  
+
   }
 }
 
@@ -1519,51 +1491,51 @@ void dh_sw::process_sw()
 
   unsigned char AGREED_KEY1 [sizeof (PRIME1)];
   unsigned char AGREED_KEY2 [DH_PRIME_LEN (KEY_LENGTH)];
-  
+
 
   // Original main() program...
-  
+
   R_RANDOM_STRUCT randomStruct;
   R_RANDOM_STRUCT randomStruct2;
   R_DH_PARAMS *params;
-  
+
   int status, keys_exchanged;
   unsigned char *agreedKey;
   unsigned char privateValue [KEY_LENGTH];
   unsigned char publicValue [sizeof (PRIME1)];
-  
-  
+
+
   PARAMS1.prime = PRIME1;
   PARAMS1.primeLen = sizeof (PRIME1);
   PARAMS1.generator = GENERATOR1;
   PARAMS1.generatorLen = sizeof (GENERATOR1);
-  
+
   PARAMS2.prime = PRIME2;
   PARAMS2.generator = GENERATOR2;
-  
-  
+
+
   /* We first generate parameters, and then do some key exchange each followed by a key computation...*/
   keys_exchanged = 0;
 
 
   /* Initialize first random structure */
-  
+
   InitRandomStruct (&randomStruct);
 
 
   /* Generate parameters */
-  
+
   if ((status = R_GenerateDHParams
       (&PARAMS2, KEY_LENGTH, (KEY_LENGTH/2), &randomStruct))) {
     printf ("ERROR: Code 0x%04x while generating parameters\n", status);
     //return(0);
     sc_stop();
   }
-  
-  
+
+
   /* Set up agreement */
 
-  {    
+  {
     params = &PARAMS1;
 
     /* Set up a break point with a do {} while (0) so that we can
@@ -1575,37 +1547,37 @@ void dh_sw::process_sw()
         printf ("ERROR: Code 0x%04x while setting up key agreement\n", status);
         break;
       }
-    
+
       memcpy (gen_otherPublicValue, publicValue, params->primeLen);
-   
+
     } while (0);
 
     memset ((POINTER)privateValue, 0, KEY_LENGTH);
   }
-  
-  
+
+
   /*** Exchange keys ***/
-  
-  while (keys_exchanged != NUM_KEYEXCHANGE) 
+
+  while (keys_exchanged != NUM_KEYEXCHANGE)
     {
       keys_exchanged++;
-      
+
       /* Initialize second random structure */
-      
+
       InitRandomStruct (&randomStruct2);
-      
-      
+
+
       /*** Generate parameters ***/
-      
+
       if ((status = R_GenerateDHParams
           (&PARAMS2, KEY_LENGTH, (KEY_LENGTH/2), &randomStruct2))) {
         printf ("ERROR: Code 0x%04x while generating parameters\n", status);
         break;
       }
-      
-      
+
+
       /*** Setup agreement ***/
-      
+
       {
         params = &PARAMS1;
 
@@ -1618,18 +1590,18 @@ void dh_sw::process_sw()
             printf ("ERROR: Code 0x%04x while setting up key agreement\n", status);
             break;
           }
-    
+
           if (gen_privateValue != NULL)
 	    strncpy ((char *)gen_privateValue, (char *)privateValue, KEY_LENGTH);
-	
+
           memcpy (gen_publicValue, publicValue, params->primeLen);
-   
+
         } while (0);
 
         memset ((POINTER)privateValue, 0, KEY_LENGTH);
       }
-      
-      
+
+
       /*** Compute agreed key ***/
 
       {
@@ -1652,19 +1624,19 @@ void dh_sw::process_sw()
             break;
           }
         } while (0);
-  
+
         printf ("*** Agreed Key:  ");
         PrintBigInteger (agreedKey, params->primeLen);
-	
+
         memset ((POINTER)gen_privateValue, 0, KEY_LENGTH);
         memset ((POINTER)agreedKey, 0, params->primeLen);
       }
-     
+
     }
-  
+
   R_memset ((POINTER)(&randomStruct), 0, sizeof (randomStruct));
-  
+
   //return(0);
   sc_stop();
-  
+
 }

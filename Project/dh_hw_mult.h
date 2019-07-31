@@ -6,21 +6,22 @@
 
 SC_MODULE (dh_hw_mult)
 {
-  sc_in<bool> hw_mult_enable; 
+  sc_in<bool> hw_mult_enable;
   sc_in<NN_DIGIT> in_data_1;
   sc_in<NN_DIGIT> in_data_2;
   sc_out<NN_DIGIT> out_data_low;
   sc_out<NN_DIGIT> out_data_high;
   sc_out<bool> hw_mult_done;
 
+  enum int state {WAIT,EXECUTE,OUTPUT,FINISH};
   void process_hw_mult();
-  
+
   SC_CTOR (dh_hw_mult)
   {
-    SC_THREAD (process_hw_mult);
-    sensitive << hw_mult_enable;
+      SC_CTHREAD (hw_fsm, clk.pos());
+      state = WAIT;
   }
-  
+
 };
 
 #endif /* end _DH_HW_MULT_H_ */
