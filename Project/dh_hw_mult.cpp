@@ -7,8 +7,7 @@ void dh_hw_mult::process_hw_mult()
 
 	NN_DIGIT a[2], b, c, t, u;
 	NN_HALF_DIGIT bHigh, bLow, cHigh, cLow;
-	state state;
-	
+
 	for (;;) {
 		switch(state){
 			case WAIT: //wait for enable to be asserted
@@ -50,7 +49,7 @@ void dh_hw_mult::process_hw_mult()
 				break;
 
 			case FINISH: //check for enable deassert -> deassert done
-				if(!(hw_mult_enable.read()){
+				if(!(hw_mult_enable.read())){
 					hw_mult_done.write(false);
 					state = WAIT;
 				}
