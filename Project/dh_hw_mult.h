@@ -13,7 +13,7 @@ SC_MODULE (dh_hw_mult)
   sc_out<NN_DIGIT> out_data_high;
   sc_out<bool> hw_mult_done;
 
-  enum int state {WAIT,EXECUTE,OUTPUT,FINISH};
+  enum state {WAIT,EXECUTE,OUTPUT,FINISH};
   void process_hw_mult();
 
   SC_CTOR (dh_hw_mult)

@@ -7,7 +7,8 @@ void dh_hw_mult::process_hw_mult()
 
 	NN_DIGIT a[2], b, c, t, u;
 	NN_HALF_DIGIT bHigh, bLow, cHigh, cLow;
-
+	state state;
+	
 	for (;;) {
 		switch(state){
 			case WAIT: //wait for enable to be asserted
@@ -58,9 +59,6 @@ void dh_hw_mult::process_hw_mult()
 			default:
 				break;
 		}
-
 		wait();
-
 	}
-
 }
