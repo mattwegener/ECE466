@@ -1,5 +1,6 @@
 #include "systemc.h"
 #include "digit.h"
+#include "hw_IC.h"
 
 #ifndef _DH_HW_MULT_H_
 #define _DH_HW_MULT_H_ 1
