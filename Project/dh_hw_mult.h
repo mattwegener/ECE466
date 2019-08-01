@@ -38,13 +38,13 @@ SC_MODULE (dh_hw_mult)
   enum exec {LOAD,RUN,SEND} exec;
   void process_hw_mult();
 
-  SC_CTOR (dh_hw_mult) :    add1(""), add2(""), add3(""), add4(""), add5(""),
-                            mult1(""), mult2(""), mult3(""), mult4(""),
-                            splitter_b(""), splitter_c(""),
-                            b_reg(""), c_reg(""), a0_reg(""), a1_reg(""),
-                            if1(""), if2(""),
-                            HH1(""), LSR1(""), LSR2(""),
-                            muxer1(""), muxer2("")
+  SC_CTOR (dh_hw_mult) :    add1("T_U_Adder"), add2("A1_HH1_Adder"), add3("A0_HHT_Adder"), add4("Mux1A1_1_Adder"), add5("Mux1A1_TMASK_Adder"),
+                            mult1("A0_MUL"), mult2("T_MUL"), mult3("U_MUL"), mult4("A1_MUL"),
+                            splitter_b("B_Splitter"), splitter_c("C_Splitter"),
+                            b_reg("B_reg"), c_reg("C_reg"), a0_reg("A0_reg"), a1_reg("A1_reg"),
+                            if1("Comparator_1"), if2("Comparator_2"),
+                            HH1("T_mask"), LSR1("LSR_one"), LSR2("LST_T_U"),
+                            muxer1("Mux_1"), muxer2("Mux_2")
   {
       SC_CTHREAD (process_hw_mult, clk.pos());
       state = WAIT;
