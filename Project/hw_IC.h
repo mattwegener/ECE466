@@ -65,7 +65,7 @@ SC_MODULE(mux2){
     }
 };
 
-SC_MODULE(t2){
+SC_MODULE(lt2){
     sc_in<NN_DIGIT> in1, in2;
     sc_out<bool> lt;
 
@@ -89,7 +89,7 @@ SC_MODULE(splitter_32){
         low.write((NN_HALF_DIGIT)LOW_HALF (input.read()));
     }
 
-    SC_CTOR(spliiter_32){
+    SC_CTOR(splitter_32){
         SC_METHOD(do_splitter_32);
         sensitive << input;
     }
