@@ -1,6 +1,7 @@
 #include "systemc.h"
 #include "digit.h"
 #include "hw_IC.h"
+#include <iostream>
 
 #ifndef _DH_HW_MULT_H_
 #define _DH_HW_MULT_H_ 1
@@ -28,7 +29,7 @@ SC_MODULE (dh_hw_mult)
 
   //signals required by hw mult
   sc_signal<NN_DIGIT> one; // constant variables
-  sc_signal<NN_DIGIT> b, c ,bhigh, blow,chigh, clow, a0, a1, t, u; //reg, splliter and mult signals
+  sc_signal<NN_DIGIT> b, c, bhigh, blow, chigh, clow, a0, a1, t, u; //reg, splliter and mult signals
   sc_signal<bool> lt_1, lt_2; // comp signals
   sc_signal<bool> b_load, c_load, a0_load, a1_load; //reg timing signals
   sc_signal<NN_DIGIT> t_u, a1_hh1, u_hht, a1_1, hh_1, hh_t; //adder & LSR signals
@@ -48,11 +49,16 @@ SC_MODULE (dh_hw_mult)
                             muxer1("Mux_1"), muxer2("Mux_2")
   {
       SC_CTHREAD (process_hw_mult, clk.pos());
+
+      //var inits
       state = WAIT;
       exec = LOAD;
-
-
       one.write(1);
+      b_load.write(false);
+      c_load.write(false);
+      a0_load.write(false);
+      a1_load.write(false);
+
       //input
       b_reg.in(in_data_1); b_reg.out(b); b_reg.load(b_load); b_reg.clock(clk);
       c_reg.in(in_data_2); c_reg.out(c); c_reg.load(c_load); c_reg.clock(clk);

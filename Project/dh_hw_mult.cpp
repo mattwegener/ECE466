@@ -1,6 +1,7 @@
 #include "systemc.h"
 #include "digit.h"
 #include "dh_hw_mult.h"
+#include <iostream>
 
 void dh_hw_mult::process_hw_mult()
 {
