@@ -41,7 +41,7 @@ SC_MODULE (dh_hw_mult)
   {
       SC_CTHREAD (process_hw_mult, clk.pos());
       state = WAIT;
-
+      NN_DIGIT one = 1;
       //input
       b_reg.in(in_data_1); b_reg.out(b); b_reg.load(b_load); b_reg.clock(clk);
       c_reg.in(in_data_2); c_reg.out(c); c_reg.load(c_load); c_reg.clock(clk);
@@ -57,11 +57,11 @@ SC_MODULE (dh_hw_mult)
       mult4.A(bhigh); mult4.B(chigh); mult4.M(a1);
 
       //inputs for 1st comp
-      add1.A(t) add1.B(u) add1.C(t_u);
+      add1.A(t); add1.B(u); add1.C(t_u);
       if1.in1(t_u); if1.in2(u); if1.lt(lt_1);
 
       //LSRS
-      LSR1.in(1); LSR1.out(hh_1);
+      LSR1.in(one); LSR1.out(hh_1);
       LSR2.in(t_u); LSR2.out(hh_t);
 
       //mux1
@@ -72,10 +72,10 @@ SC_MODULE (dh_hw_mult)
       add3.A(hh_t); add3.B(a0); add3.C(a0_out);
 
       //lt comparator 2
-      if2.in1(a0_out); if2.in2(htt); if2.lt(lt2);
+      if2.in1(a0_out); if2.in2(hh_t); if2.lt(lt_2);
 
       //mux2
-      add4.A(m1_a1); add4.B(1); add4.C(a1_1);
+      add4.A(m1_a1); add4.B(one); add4.C(a1_1);
       muxer2.in1(a1_1); muxer2.in2(m1_a1); muxer2.sel(lt_2); muxer2.out(m2_a1);
 
       //a1 output
