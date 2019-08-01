@@ -53,8 +53,8 @@ SC_MODULE (dh_hw_mult)
 
       one.write(1);
       //input
-      b_reg.in(in_data_1.read()); b_reg.out(b); b_reg.load(b_load); b_reg.clock(clk);
-      c_reg.in(in_data_2.read()); c_reg.out(c); c_reg.load(c_load); c_reg.clock(clk);
+      b_reg.in(in_data_1); b_reg.out(b); b_reg.load(b_load); b_reg.clock(clk);
+      c_reg.in(in_data_2); c_reg.out(c); c_reg.load(c_load); c_reg.clock(clk);
 
       //split data
       splitter_b.input(b); splitter_b.high(bhigh); splitter_b.low(blow);
