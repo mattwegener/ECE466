@@ -20,24 +20,24 @@ void dh_hw_mult::process_hw_mult()
 			case EXECUTE: //do multiplication
 				switch(exec){
 					case LOAD:
-						b_load.write(TRUE);
-						c_load.write(TRUE);
-						a0_load.write(FALSE);
-						a1_load.write(FALSE);
+						b_load.write(true);
+						c_load.write(true);
+						a0_load.write(false);
+						a1_load.write(false);
 						exec = RUN;
 						break;
 
 					case RUN:
-						b_load.write(FALSE);
-						c_load.write(FALSE);
-						a0_load.write(TRUE);
-						a1_load.write(TRUE);
+						b_load.write(false);
+						c_load.write(false);
+						a0_load.write(true);
+						a1_load.write(true);
 						exec = SEND;
 						break;
 
 					case SEND:
-						a0_load.write(FALSE);
-						a1_load.write(FALSE);
+						a0_load.write(false);
+						a1_load.write(false);
 						state = OUTPUT;
 					break;
 				}
