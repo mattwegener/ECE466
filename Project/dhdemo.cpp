@@ -31,7 +31,13 @@ int sc_main(int argc , char *argv[])
 	DH_HW_MULT.hw_mult_enable (enable);	// enable hardware
 	DH_HW_MULT.hw_mult_done (done);		// hardware done
 
+	sc_trace_file* Tf = sc_create_vcd_trace_file("Filter_traces");
+    Tf->set_time_unit(1, SC_NS);
+    sc_trace(Tf, enable  , "Enable" );
+    sc_trace(Tf, done  , "Done" );
+
 	sc_start();
 
+	sc_close_vcd_trace_file(Tf);
 	return(0);
 }
