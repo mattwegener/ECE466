@@ -24,7 +24,7 @@ SC_MODULE (dh_hw_mult)
   lt2 if1, if2;
   mask_high HH1;
   LSR_high LSR1, LSR2;
-  mux2 mux1, mux2;
+  mux2 muxer1, muxer2;
 
   //signals required by hw mult
   sc_signal<NN_DIGIT> b, c ,bhigh, blow,chigh, clow, a0, a1, t, u; //reg, splliter and mult signals
@@ -34,6 +34,7 @@ SC_MODULE (dh_hw_mult)
   sc_signal<NN_DIGIT> m1_a1, m2_a1, t_mask; //mux and mask signals
 
   enum state {WAIT,EXECUTE,OUTPUT,FINISH} state;
+
   void process_hw_mult();
 
   SC_CTOR (dh_hw_mult)
@@ -65,7 +66,7 @@ SC_MODULE (dh_hw_mult)
 
       //mux1
       add2.A(hh1); add2.B(a1); add2.C(a1_hh1);
-      mux1.in1(a1_hh1); mux1.in2(a1); mux1.out(m1_a1);
+      muxer1.in1(a1_hh1); muxer1.in2(a1); muxer1.out(m1_a1);
 
       //a0 output
       add3.A(htt); add3.B(a0); add3.C(a0_out);
@@ -75,7 +76,7 @@ SC_MODULE (dh_hw_mult)
 
       //mux2
       add4.A(m1_a1); add4.B(1); add4.C(a1_1);
-      mux2.in1(a1_1); mux2.in2(m1_a1); mux2.out(m2_a1);
+      muxer2.in1(a1_1); muxer2.in2(m1_a1); muxer2.out(m2_a1);
 
       //a1 output
       HH1.in(t_u); HH1.out(t_mask);
