@@ -65,7 +65,7 @@ SC_MODULE(mux2){
     }
 };
 
-SC_MODULE(t2){
+SC_MODULE(lt2){
     sc_in<NN_DIGIT> in1, in2;
     sc_out<bool> lt;
 
@@ -84,12 +84,12 @@ SC_MODULE(splitter_32){
     sc_in<NN_DIGIT> input;
     sc_out<NN_DIGIT> high,low;
 
-    void do_spliiter_32(){
+    void do_splitter_32(){
         high.write((NN_HALF_DIGIT)HIGH_HALF (input.read()));
         low.write((NN_HALF_DIGIT)LOW_HALF (input.read()));
     }
 
-    SC_CTOR(spliiter_32){
+    SC_CTOR(splitter_32){
         SC_METHOD(do_splitter_32);
         sensitive << input;
     }
