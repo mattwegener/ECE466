@@ -9,7 +9,8 @@ SC_MODULE(adder2){
     C.write(A.read() + B.read());
   }
 
-  SC_CTOR(adder2) : A("Input1"), B("Input2"), C("Output"){
+  SC_CTOR(adder2) : A("Input1"), B("Input2"), C("Output")
+  {
     SC_METHOD(do_adder2);
     sensitive << A << B;
   }
@@ -23,7 +24,8 @@ SC_MODULE(mul2){
     M.write(A.read() * B.read());
   }
 
-  SC_CTOR(mul2) : A("Input1"), B("Input2"), M("Output"){
+  SC_CTOR(mul2) : A("Input1"), B("Input2"), M("Output")
+  {
     SC_METHOD(do_mul2);
     sensitive << A << B;
   }
@@ -44,7 +46,8 @@ SC_MODULE(reg){
       wait();
     }
   }
-  SC_CTOR(reg) : in("Input1"), out("Output"){
+  SC_CTOR(reg) : in("Input1"), out("Output")
+  {
     SC_CTHREAD(do_reg,clock.pos());
   }
 };
@@ -59,7 +62,8 @@ SC_MODULE(mux2){
         else out.write(in2.read());
     }
 
-    SC_CTOR(mux2): in1("Input1"), in2("Input2"), out("Output"){
+    SC_CTOR(mux2) : in1("Input1"), in2("Input2"), out("Output")
+    {
         SC_METHOD(do_mux2);
         sensitive << in1 << in2 << sel;
     }
@@ -74,7 +78,8 @@ SC_MODULE(lt2){
         else lt.write(false);
     }
 
-    SC_CTOR(lt2) : in1("Input1"), in2("Input2"), lt("Output"){
+    SC_CTOR(lt2) : in1("Input1"), in2("Input2"), lt("Output")
+    {
         SC_METHOD(do_lt2);
         sensitive << in1 << in2;
     }
@@ -104,7 +109,8 @@ SC_MODULE(LSR_high){
         out.write(TO_HIGH_HALF(in.read()));
     }
 
-    SC_CTOR(LSR_high): in("Input"), out("Output"){
+    SC_CTOR(LSR_high) : in("Input"), out("Output")
+    {
         SC_METHOD(do_LSR_high);
         sensitive << in;
     }
@@ -118,7 +124,8 @@ SC_MODULE(mask_high){
         out.write(HIGH_HALF(in.read()));
     }
 
-    SC_CTOR(mask_high): in("Input"), out("Output"){
+    SC_CTOR(mask_high) : in("Input"), out("Output")
+    {
         SC_METHOD(do_mask_high);
         sensitive << in;
     }
