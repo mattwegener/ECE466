@@ -8,6 +8,7 @@ void dh_hw_mult::process_hw_mult()
 
 	//NN_DIGIT a[2];
 	//NN_HALF_DIGIT bHigh, bLow, cHigh, cLow;
+	int debug = 0;
 
 	for (;;) {
 		switch(state){
@@ -59,8 +60,10 @@ void dh_hw_mult::process_hw_mult()
 					out_data_low.write(0);
 					out_data_high.write(0);
 					state = WAIT;
-
 				}
+
+				debug++;
+				if((debug % 1000) == 0) cout << "Counter = " << debug << endl;
 				break;
 
 			default:
