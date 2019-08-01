@@ -37,7 +37,13 @@ SC_MODULE (dh_hw_mult)
 
   void process_hw_mult();
 
-  SC_CTOR (dh_hw_mult)
+  SC_CTOR (dh_hw_mult) :    add1(""), add2(""), add3(""), add4(""), add5(""),
+                            mult1(""), mult2(""), mult3(""), mult4(""),
+                            splitter_b(""), splitter_c(""),
+                            b_reg(""), c_reg(""), a0_reg(""), a1_reg(""),
+                            if1(""), if2(""),
+                            HH1(""), LSR1(""), LSR2(""),
+                            muxer1(""), muxer2("")
   {
       SC_CTHREAD (process_hw_mult, clk.pos());
       state = WAIT;
