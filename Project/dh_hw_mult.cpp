@@ -5,8 +5,8 @@
 void dh_hw_mult::process_hw_mult()
 {
 
-	NN_DIGIT a[2], b, c, t, u;
-	NN_HALF_DIGIT bHigh, bLow, cHigh, cLow;
+	NN_DIGIT a[2];
+	//NN_HALF_DIGIT bHigh, bLow, cHigh, cLow;
 
 	for (;;) {
 		switch(state){
@@ -17,6 +17,7 @@ void dh_hw_mult::process_hw_mult()
 				break;
 
 			case EXECUTE: //do multiplication
+				/*
 				// Read inputs
 				b = in_data_1.read();
 				c = in_data_2.read();
@@ -39,7 +40,7 @@ void dh_hw_mult::process_hw_mult()
 				if ((a[0] += u) < u) a[1]++;
 
 				a[1] += HIGH_HALF (t);
-
+				*/
 				state = OUTPUT;
 				break;
 

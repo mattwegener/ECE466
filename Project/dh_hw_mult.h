@@ -28,9 +28,9 @@ SC_MODULE (dh_hw_mult)
 
   //signals required by hw mult
   sc_signal<NN_DIGIT> b, c ,bhigh, blow,chigh, clow, a0, a1, t, u; //reg, splliter and mult signals
-  sc_signal<bool> lt1, lt2; // comp signals
+  sc_signal<bool> lt_1, lt_2; // comp signals
   sc_signal<bool> b_load, c_load, a0_load, a1_load; //reg timing signals
-  sc_signal<NN_DIGIT> t_u, a1_hh1, u_hht, a0_out, a1_1, a1_out, hh1, hht; //adder & LSR signals
+  sc_signal<NN_DIGIT> t_u, a1_hh1, u_hht, a0_out, a1_1, a1_out, hh_1, hh_t; //adder & LSR signals
   sc_signal<NN_DIGIT> m1_a1, m2_a1, t_mask; //mux and mask signals
 
   enum state {WAIT,EXECUTE,OUTPUT,FINISH} state;
@@ -58,25 +58,25 @@ SC_MODULE (dh_hw_mult)
 
       //inputs for 1st comp
       add1.A(t) add1.B(u) add1.C(t_u);
-      if1.in1(t_u); if1.in2(u); if1.lt(lt1);
+      if1.in1(t_u); if1.in2(u); if1.lt(lt_1);
 
       //LSRS
-      LSR1.in(1); LSR1.out(hh1);
-      LSR2.in(t_u); LSR2.out(hht);
+      LSR1.in(1); LSR1.out(hh_1);
+      LSR2.in(t_u); LSR2.out(hh_t);
 
       //mux1
-      add2.A(hh1); add2.B(a1); add2.C(a1_hh1);
-      muxer1.in1(a1_hh1); muxer1.in2(a1); muxer1.out(m1_a1);
+      add2.A(hh_1); add2.B(a1); add2.C(a1_hh1);
+      muxer1.in1(a1_hh1); muxer1.in2(a1); muxer1.sel(lt_1); muxer1.out(m1_a1);
 
       //a0 output
-      add3.A(htt); add3.B(a0); add3.C(a0_out);
+      add3.A(hh_t); add3.B(a0); add3.C(a0_out);
 
       //lt comparator 2
       if2.in1(a0_out); if2.in2(htt); if2.lt(lt2);
 
       //mux2
       add4.A(m1_a1); add4.B(1); add4.C(a1_1);
-      muxer2.in1(a1_1); muxer2.in2(m1_a1); muxer2.out(m2_a1);
+      muxer2.in1(a1_1); muxer2.in2(m1_a1); muxer2.sel(lt_2); muxer2.out(m2_a1);
 
       //a1 output
       HH1.in(t_u); HH1.out(t_mask);
