@@ -31,8 +31,9 @@ SC_MODULE (dh_hw_mult)
   sc_signal<NN_DIGIT> b, c ,bhigh, blow,chigh, clow, a0, a1, t, u; //reg, splliter and mult signals
   sc_signal<bool> lt_1, lt_2; // comp signals
   sc_signal<bool> b_load, c_load, a0_load, a1_load; //reg timing signals
-  sc_signal<NN_DIGIT> t_u, a1_hh1, u_hht, a0_out, a1_1, a1_out, hh_1, hh_t; //adder & LSR signals
+  sc_signal<NN_DIGIT> t_u, a1_hh1, u_hht, a1_1, hh_1, hh_t; //adder & LSR signals
   sc_signal<NN_DIGIT> m1_a1, m2_a1, t_mask; //mux and mask signals
+  sc_signal<NN_DIGIT> a0_reg_in, a1_reg_in, a0_out, a1_out; //output signals
 
   enum state {WAIT,EXECUTE,OUTPUT,FINISH} state;
   enum exec {LOAD,RUN,SEND} exec;
@@ -79,7 +80,7 @@ SC_MODULE (dh_hw_mult)
       muxer1.in1(a1_hh1); muxer1.in2(a1); muxer1.sel(lt_1); muxer1.out(m1_a1);
 
       //a0 output
-      add3.A(hh_t); add3.B(a0); add3.C(a0_out);
+      add3.A(hh_t); add3.B(a0); add3.C(a0_reg_in);
 
       //lt comparator 2
       if2.in1(a0_out); if2.in2(hh_t); if2.lt(lt_2);
@@ -90,8 +91,11 @@ SC_MODULE (dh_hw_mult)
 
       //a1 output
       HH1.in(t_u); HH1.out(t_mask);
-      add5.A(m2_a1); add5.B(t_mask); add5.C(a1_out);
+      add5.A(m2_a1); add5.B(t_mask); add5.C(a1_reg_in);
 
+      //Output reg
+      a0_reg.in(a0_reg_in); a0_reg.out(a0_out); a0_reg.load(a0_load); a0_reg.clock(clk);
+      a1_reg.in(a1_reg_in); a1_reg.out(a1_out); a1_reg.load(a1_load); a1_reg.clock(clk);
   }
 
 };
