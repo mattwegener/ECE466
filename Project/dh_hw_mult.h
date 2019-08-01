@@ -54,6 +54,7 @@ SC_MODULE (dh_hw_mult)
       state = WAIT;
       exec = LOAD;
       one.write(1);
+      
       b_load.write(false);
       c_load.write(false);
       a0_load.write(false);

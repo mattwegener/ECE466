@@ -6,7 +6,7 @@
 void dh_hw_mult::process_hw_mult()
 {
 
-	NN_DIGIT a[2];
+	//NN_DIGIT a[2];
 	//NN_HALF_DIGIT bHigh, bLow, cHigh, cLow;
 
 	for (;;) {
