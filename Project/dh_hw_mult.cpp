@@ -59,8 +59,10 @@ void dh_hw_mult::process_hw_mult()
 					state = WAIT;
 				}
 
+				/*
 				debug++;
 				if((debug % 1000) == 0) cout << "Counter = " << debug << endl;
+				*/
 				break;
 
 			default:
