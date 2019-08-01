@@ -33,17 +33,19 @@ void dh_hw_mult::process_hw_mult()
 				a[1] = (NN_DIGIT)bHigh * (NN_DIGIT)cHigh;
 
 				if ((t += u) < u) a[1] += TO_HIGH_HALF (1);
-					u = TO_HIGH_HALF (t);
+
+				u = TO_HIGH_HALF (t);
 
 				if ((a[0] += u) < u) a[1]++;
-					a[1] += HIGH_HALF (t);
+
+				a[1] += HIGH_HALF (t);
 
 				state = OUTPUT;
 				break;
 
 			case OUTPUT: //write to output port & assert done
-				out_data_low.write(a[0]);
-				out_data_high.write(a[1]);
+				out_data_low.write(a0_out.read());
+				out_data_high.write(a1_out.read());
 				hw_mult_done.write(true);
 				state = FINISH;
 				break;
