@@ -54,7 +54,7 @@ SC_MODULE (dh_hw_mult)
       state = WAIT;
       exec = LOAD;
       one.write(1);
-      
+
       b_load.write(false);
       c_load.write(false);
       a0_load.write(false);
@@ -66,7 +66,7 @@ SC_MODULE (dh_hw_mult)
 
       //split data
       splitter_b.input(b); splitter_b.high(bhigh); splitter_b.low(blow);
-      splitter_c.input(c); splitter_c.high(chigh); splitter_b.low(clow);
+      splitter_c.input(c); splitter_c.high(chigh); splitter_c.low(clow);
 
       //mult data
       mult1.A(blow); mult1.B(clow); mult1.M(a0);
