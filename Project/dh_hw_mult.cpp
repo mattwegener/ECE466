@@ -22,8 +22,6 @@ void dh_hw_mult::process_hw_mult()
 			case EXECUTE: //do multiplication
 				switch(exec){
 					case LOAD:
-						cout << exec << endl;
-						
 						b_load.write(true);
 						c_load.write(true);
 						a0_load.write(false);
