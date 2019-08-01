@@ -12,36 +12,36 @@ void dh_hw_mult::process_hw_mult()
 		switch(state){
 			case WAIT: //wait for enable to be asserted
 				if (hw_mult_enable.read()){
+					exec = LOAD;
 					state = EXECUTE;
 				}
 				break;
 
 			case EXECUTE: //do multiplication
-				/*
-				// Read inputs
-				b = in_data_1.read();
-				c = in_data_2.read();
+				switch(exec){
+					case LOAD:
+						b_load.write(TRUE);
+						c_load.write(TRUE);
+						a0_load.write(FALSE);
+						a1_load.write(FALSE);
+						exec = RUN;
+						break;
 
-				// Original code from NN_DigitMult()...
-				bHigh = (NN_HALF_DIGIT)HIGH_HALF (b);
-				bLow = (NN_HALF_DIGIT)LOW_HALF (b);
-				cHigh = (NN_HALF_DIGIT)HIGH_HALF (c);
-				cLow = (NN_HALF_DIGIT)LOW_HALF (c);
+					case RUN:
+						b_load.write(FALSE);
+						c_load.write(FALSE);
+						a0_load.write(TRUE);
+						a1_load.write(TRUE);
+						exec = SEND;
+						break;
 
-				a[0] = (NN_DIGIT)bLow * (NN_DIGIT)cLow;
-				t = (NN_DIGIT)bLow * (NN_DIGIT)cHigh;
-				u = (NN_DIGIT)bHigh * (NN_DIGIT)cLow;
-				a[1] = (NN_DIGIT)bHigh * (NN_DIGIT)cHigh;
+					case SEND:
+						a0_load.write(FALSE);
+						a1_load.write(FALSE);
+						state = OUTPUT;
+					break;
+				}
 
-				if ((t += u) < u) a[1] += TO_HIGH_HALF (1);
-
-				u = TO_HIGH_HALF (t);
-
-				if ((a[0] += u) < u) a[1]++;
-
-				a[1] += HIGH_HALF (t);
-				*/
-				state = OUTPUT;
 				break;
 
 			case OUTPUT: //write to output port & assert done
@@ -54,7 +54,11 @@ void dh_hw_mult::process_hw_mult()
 			case FINISH: //check for enable deassert -> deassert done
 				if(!(hw_mult_enable.read())){
 					hw_mult_done.write(false);
+					// clear output signals
+					out_data_low.write(0);
+					out_data_high.write(0);
 					state = WAIT;
+
 				}
 				break;
 

@@ -35,7 +35,7 @@ SC_MODULE (dh_hw_mult)
   sc_signal<NN_DIGIT> m1_a1, m2_a1, t_mask; //mux and mask signals
 
   enum state {WAIT,EXECUTE,OUTPUT,FINISH} state;
-
+  enum exec {LOAD,RUN,SEND} exec;
   void process_hw_mult();
 
   SC_CTOR (dh_hw_mult) :    add1(""), add2(""), add3(""), add4(""), add5(""),
@@ -48,12 +48,13 @@ SC_MODULE (dh_hw_mult)
   {
       SC_CTHREAD (process_hw_mult, clk.pos());
       state = WAIT;
+      exec = LOAD;
 
 
       one.write(1);
       //input
-      b_reg.in(in_data_1); b_reg.out(b); b_reg.load(b_load); b_reg.clock(clk);
-      c_reg.in(in_data_2); c_reg.out(c); c_reg.load(c_load); c_reg.clock(clk);
+      b_reg.in(in_data_1.read()); b_reg.out(b); b_reg.load(b_load); b_reg.clock(clk);
+      c_reg.in(in_data_2.read()); c_reg.out(c); c_reg.load(c_load); c_reg.clock(clk);
 
       //split data
       splitter_b.input(b); splitter_b.high(bhigh); splitter_b.low(blow);
