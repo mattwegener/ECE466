@@ -27,6 +27,7 @@ SC_MODULE (dh_hw_mult)
   mux2 muxer1, muxer2;
 
   //signals required by hw mult
+  sc_signal<NN_DIGIT> one; // constant variables
   sc_signal<NN_DIGIT> b, c ,bhigh, blow,chigh, clow, a0, a1, t, u; //reg, splliter and mult signals
   sc_signal<bool> lt_1, lt_2; // comp signals
   sc_signal<bool> b_load, c_load, a0_load, a1_load; //reg timing signals
@@ -37,11 +38,19 @@ SC_MODULE (dh_hw_mult)
 
   void process_hw_mult();
 
-  SC_CTOR (dh_hw_mult)
+  SC_CTOR (dh_hw_mult) :    add1(""), add2(""), add3(""), add4(""), add5(""),
+                            mult1(""), mult2(""), mult3(""), mult4(""),
+                            splitter_b(""), splitter_c(""),
+                            b_reg(""), c_reg(""), a0_reg(""), a1_reg(""),
+                            if1(""), if2(""),
+                            HH1(""), LSR1(""), LSR2(""),
+                            muxer1(""), muxer2("")
   {
       SC_CTHREAD (process_hw_mult, clk.pos());
       state = WAIT;
-      NN_DIGIT one = 1;
+
+
+      one.write(1);
       //input
       b_reg.in(in_data_1); b_reg.out(b); b_reg.load(b_load); b_reg.clock(clk);
       c_reg.in(in_data_2); c_reg.out(c); c_reg.load(c_load); c_reg.clock(clk);
