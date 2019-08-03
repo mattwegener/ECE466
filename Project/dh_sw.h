@@ -2,6 +2,7 @@
 #include <string.h>
 #include "systemc.h"
 #include "digit.h"
+#include <iostream>
 
 #ifndef _DH_SW_H_
 #define _DH_SW_H_ 1
@@ -47,17 +48,17 @@ typedef unsigned char *POINTER;
    License is also granted to make and use derivative works provided
    that such works are identified as "derived from the RSA Data
    Security, Inc. MD5 Message-Digest Algorithm" in all material
-   mentioning or referencing the derived work.  
-                                                                    
+   mentioning or referencing the derived work.
+
    RSA Data Security, Inc. makes no representations concerning either
    the merchantability of this software or the suitability of this
    software for any particular purpose. It is provided "as is"
-   without express or implied warranty of any kind.  
-                                                                    
+   without express or implied warranty of any kind.
+
    These notices must be retained in any copies of any part of this
-   documentation and/or software.  
+   documentation and/or software.
  */
- 
+
 
 /* MD5 context. */
 typedef struct {
@@ -121,13 +122,13 @@ typedef struct {
     (a) += (b); \
   }
 
-  
+
 /*********************************************************************/
 
 /* Copyright (C) RSA Laboratories, a division of RSA Data Security,
      Inc., created 1991. All rights reserved.
  */
- 
+
 /* RSA key lengths.
  */
 #define MIN_RSA_MODULUS_BITS 508
@@ -249,7 +250,7 @@ typedef struct {
 
 SC_MODULE (dh_sw)
 {
-  sc_in<bool> hw_mult_done; 
+  sc_in<bool> hw_mult_done;
   sc_in<NN_DIGIT> in_data_low;
   sc_in<NN_DIGIT> in_data_high;
   sc_out<NN_DIGIT> out_data_1;
@@ -257,8 +258,8 @@ SC_MODULE (dh_sw)
   sc_out<bool> hw_mult_enable;
 
   void process_sw();
-  
-  SC_CTOR (dh_sw) 
+
+  SC_CTOR (dh_sw)
   {
     SC_THREAD (process_sw);
     sensitive << hw_mult_done;
@@ -293,7 +294,7 @@ SC_MODULE (dh_sw)
    NN_ASSIGN_DIGIT (a, b, digits)  Assigns a = b, where b is a digit.
    NN_AssignZero (a, digits)    Assigns a = 0.
    NN_Assign2Exp (a, b, digits)    Assigns a = 2^b.
-     
+
    ARITHMETIC OPERATIONS
    NN_Add (a, b, c, digits)        Computes a = b + c.
    NN_Sub (a, b, c, digits)        Computes a = b - c.
@@ -351,7 +352,7 @@ SC_MODULE (dh_sw)
 
   void NN_DigitMult (NN_DIGIT [2], NN_DIGIT, NN_DIGIT);
   void NN_DigitDiv (NN_DIGIT *, NN_DIGIT [2], NN_DIGIT);
-  
+
 NN_DIGIT NN_AddDigitMult (NN_DIGIT *, NN_DIGIT *, NN_DIGIT, NN_DIGIT *, unsigned int);
 NN_DIGIT NN_SubDigitMult (NN_DIGIT *, NN_DIGIT *, NN_DIGIT, NN_DIGIT *, unsigned int);
 

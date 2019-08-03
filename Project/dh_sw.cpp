@@ -7,7 +7,7 @@
 
 #include "systemc.h"
 #include "dh_sw.h"
-
+#include <iostream>
 
 static unsigned char PADDING[64] = {
   0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1636,6 +1636,8 @@ void dh_sw::process_sw()
 
   R_memset ((POINTER)(&randomStruct), 0, sizeof (randomStruct));
 
+
+  cout << endl << sc_time_stamp() << endl;
   //return(0);
   sc_stop();
 
